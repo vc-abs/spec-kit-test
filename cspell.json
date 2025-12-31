@@ -1,0 +1,103 @@
+{
+	"version": "0.2",
+	"language": "en",
+	"dictionaries": [
+		"node",
+		"en-gb"
+	],
+	"files": [
+		"**"
+	],
+	"ignorePaths": [
+		"dist"
+	],
+	"minWordLength": 2,
+	"words": [
+		"huggingface",
+		"nerdamer",
+		"laufire",
+		"unmock",
+		"Heighted",
+		"weightage",
+		"Pickable",
+		"choosable",
+		"Ludddu",
+		"DMDM",
+		"mergeable",
+		"speedrun",
+		"brinjal",
+		"dosa",
+		"roti",
+		"PPSBOB",
+		"RGYBWG",
+		"navaratri",
+		"Blorp",
+		"Crint",
+		"Flab",
+		"Glint",
+		"Snab",
+		"Splat",
+		"Threx",
+		"Vint",
+		"Zog",
+		"Quiv",
+		"abstractit",
+		"kaju",
+		"Katli",
+		"kajukatli",
+		"rugbyball",
+		"Idli",
+		"Koorma",
+		"Idlies",
+		"nadaswaram",
+		"dhol",
+		"veggi",
+		"veggies",
+		"mridangam",
+		"veggy",
+		"aarav",
+		"kavya",
+		"vihaan",
+		"anaya",
+		"arjun",
+		"shruti",
+		"karthik",
+		"swetha",
+		"rohan",
+		"priya",
+		"sanjay",
+		"deepa",
+		"aditya",
+		"meera",
+		"ramanujan",
+		"janaki",
+		"sohan",
+		"lakshmi",
+		"ravi",
+		"padma",
+		"silhoutte",
+		"jqsk",
+		"jqgk",
+		"Eqn",
+		"Gos"
+	],
+	"patterns": [
+		{
+			"name": "acronyms",
+			"pattern": "/[A-Z_]+(?![a-z])/"
+		},
+		{
+			"name": "shorthands",
+			"pattern": "/[a-z]{1,3}/"
+		},
+		{
+			"name": "patternConfig",
+			"pattern": "/[a-c]+/"
+		}
+	],
+	"ignoreRegExpList": [
+		"acronyms",
+		"shorthands",
+		"patternConfig"
+	]
+}

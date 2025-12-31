@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -e
+
+# Helpers
+getTargetEv() {
+	current_branch=$(git symbolic-ref --short HEAD)
+
+	case "$current_branch" in
+		main)
+			target="test"
+			;;
+		uat)
+			target="uat"
+			;;
+		prod)
+			target="prod"
+			;;
+		f-*)
+			target="dev"
+			;;
+		*)
+			target="dev"
+			;;
+	esac
+
+	export TGT_ENV=$target
+}
+
+disallowWhenChangesUncommitted() {
+	commitStatus=$(git diff --name-only | wc -l | awk {'print $1'})
+
+	if [ $(commitStatus) -gt 0 ]
+		then
+		echo "Commit your changes!"
+		exit 1
+	fi
+}
+
+runTests() {
+}
+
+main() {
+	getTargetEv
+	disallowWhenChangesUncommitted
+	runTests
+}
+
+# Main
+main()
