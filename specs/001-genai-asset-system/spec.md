@@ -32,7 +32,7 @@
 - **Parameter Source**: Flexible - entity-template files for reusable configs, or Copilot prompt for one-off customizations
 
 **DVC & Version Control**
-- **DVC Workflow**: Custom Copilot prompt/workflow executes `dvc add <asset>` + `git add` + `git commit` after generation
+- **DVC Workflow**: Custom Copilot prompt/workflow executes `dvc add <asset>` + `git add`, then prompts user for commit approval before executing `git commit`
 - **DVC Prerequisite**: Remote storage (S3/Azure/GCS/local) configured before P1 - not part of implementation
 - **Commit Format**: Single assets: `feat(asset): add <type> with <entity1>, <entity2>`. Batches: `feat(asset): add <count> <type> variations with <entities>`
 - **Batch Commits**: All batch assets in single atomic commit
@@ -150,7 +150,7 @@ A content creator browses previously generated assets using VS Code's file explo
 - **FR-002**: Entity files MUST follow naming pattern `entities/<type>/<name>.md` (e.g., `entities/character/max.md`). Names MUST use kebab-case with only alphanumeric characters and hyphens (no special characters). No feature prefix. Supported types: character, style, environment, entity-template.
 - **FR-003**: System MUST support asset generation workflows via GitHub Copilot for types: informative images, greeting cards, sprite-sheets, videos
 - **FR-004**: Entity templates MUST include model_config in YAML front-matter using discriminated union by provider. For MCP: `{provider: mcp, server: <mcp-server-name>, model: <model-name>}`. For direct API: `{provider: direct-api, endpoint: <url>, api_key: ${ENV_VAR}, model: <model-name>}`. MCP server names resolve to configurations in `.vscode/settings.json`.
-- **FR-005**: System MUST provide custom Copilot prompt/workflow that tracks all generated binary assets using DVC with automatic commit and versioning. Workflow executes `dvc add <asset>` + `git add <asset>.dvc <metadata>.yaml` + `git commit` after asset generation and validation. Commit message format: `feat(asset): add <asset-type> with <entity1>, <entity2>` for single assets. Batch commits use format: `feat(asset): add <count> <asset-type> variations with <entities>` to group all batch assets in single commit.
+- **FR-005**: System MUST provide custom Copilot prompt/workflow that tracks all generated binary assets using DVC with human-approved commit and versioning. After asset generation and validation, workflow executes `dvc add <asset>` + `git add <asset>.dvc <metadata>.yaml`, then MUST present proposed commit message to user for approval before executing `git commit`. Commit message format: `feat(asset): add <asset-type> with <entity1>, <entity2>` for single assets. Batch commits use format: `feat(asset): add <count> <asset-type> variations with <entities>` to group all batch assets in single commit. User MUST explicitly approve (via typing "yes", "commit", or confirming) before commit executes.
 - **FR-006**: System MUST generate and store metadata for each asset including: generation timestamp, entity references, model used, generation parameters
 - **FR-007**: System MUST store asset metadata as YAML files version-controlled in git (separate from binary assets in DVC)
 - **FR-008**: Copilot agents MUST validate entity file references exist before asset generation and provide clear error messages if missing

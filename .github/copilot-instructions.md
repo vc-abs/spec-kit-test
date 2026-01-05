@@ -13,6 +13,7 @@ name: copilot-instructions
 
 **Prohibited:**
 - ❌ **NO auto-commit** — Only commit when user explicitly invokes `/commit`
+  - **CRITICAL**: Do NOT execute `git commit` unless the user types `/commit` or explicitly says "commit this" or "commit now"
 - ❌ **NO auto-push** — Never execute `git push`
 - ❌ **NO arbitrary commands** — Only allowlisted commands (see below)
 - ❌ **NO API access** — Do not call external APIs, cloud providers, or networked services without explicit user consent
@@ -23,8 +24,9 @@ name: copilot-instructions
 git status              # Check working tree state (auto-allowed)
 git diff                # Review changes (auto-allowed)
 git log                 # View history (auto-allowed)
-git add .               # Stage changes (only after user invokes /commit)
-git commit -m "<msg>"   # Commit (only after explicit /commit)
+git add .               # Stage changes (ONLY after user invokes /commit)
+git commit -m "<msg>"   # Commit (ONLY after explicit /commit invocation)
+git reset               # Undo operations (allowed when fixing mistakes)
 ```
 
 **Required Behaviors:**
