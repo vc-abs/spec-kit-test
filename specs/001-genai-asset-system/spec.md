@@ -9,12 +9,27 @@
 
 ### Session 2026-01-04
 
+### Session 2026-01-09
+
+- Q: Should entity types be explicitly enumerated or open-ended? → A: Leave entity types open-ended for future extensibility
+- Q: Should circular dependencies between entities be allowed? → A: Allow circular dependencies between entities, with explicit cycle detection and handling. Example: Max is the son of Min and Min is the father of Max.
+- Q: Should entity update/modification be allowed? → A: Allow entity update/modification, but require explicit versioning and audit trail (clarified 2026-01-09)
+- Q: Should a formal requirement ID scheme and traceability mapping be established? → A: No formal requirement ID scheme; rely on section headings and manual cross-referencing (clarified 2026-01-09)
+- Q: How should major edge cases be handled? → A: Specify fallback and error handling for all major edge cases (malformed YAML, binary generation failure, large descriptions, unsupported asset types, infinite recursion, detached HEAD, DVC full) (clarified 2026-01-09)
+- Q: Should entity type lists be aligned and reflect extensibility? → A: Update FR-002 to reflect open-ended entity types with examples rather than closed list (clarified 2026-01-09)
+- Q: What are network connectivity assumptions for API calls? → A: Document assumption: stable network connectivity required for API calls, with retry/timeout configuration for network resilience (clarified 2026-01-09)
+- Q: How to resolve entity immutability conflict? → A: Entities are mutable with explicit versioning and audit trail; update assumptions to reflect versioned mutability model (clarified 2026-01-09)
+- Q: How should concurrent entity creation be handled? → A: Auto generation workflows support concurrent entity creation; user-assisted generation (Copilot prompts) is sequential or batched (max 5 assets) (clarified 2026-01-09)
+- Q: Are accessibility requirements needed for keyboard navigation and screen reader compatibility? → A: Out-of-scope: system is Copilot workflow-based with no custom UI; accessibility depends on VS Code's built-in support (clarified 2026-01-09)
+
 **Scope & Architecture**
+
 - **System Type**: Copilot workflow (NOT CLI tool) - Use Spec-kit with GitHub Copilot to generate assets via prompts and agents
 - **Implementation Priority**: P1 MCP validation → P2 entities → P3+ features. MCP/API connectivity is absolute prerequisite before entity work
 - **MCP Validation**: Connection test + single test asset generation per supported type (greeting-card, informative-image, sprite-sheet, video)
 
 **Storage & Organization**
+
 - **Entity Storage**: YAML front-matter + Markdown files at `entities/<type>/<name>.md` (e.g., `entities/character/max.md`)
 - **Asset Storage**: Flat `content/` directory for production; `content/test/` for P1 validation assets
 - **Naming Convention**: Kebab-case with only alphanumeric + hyphens. No special characters. Entities: `<type>/<name>.md`. Assets: `<feature>-<description>.<asset-type>.<ext>`
@@ -22,23 +37,27 @@
 - **Logs**: Per-asset files at `logs/<asset-name>.log` (naming constraints ensure filesystem safety)
 
 **Model Configuration Architecture**
+
 - **Config Location**: Inline in entity YAML front-matter (model_config field). MCP server details in `.vscode/settings.json` (version-controlled). Credentials in `.env` (gitignored)
 - **Config Structure**: Discriminated union by provider field. MCP: `{provider: mcp, server: <name>, model: <model>}`. Direct API: `{provider: direct-api, endpoint: <url>, api_key: ${ENV_VAR}, model: <model>}`
 - **Model Resolution**: When entities have different preferences, asset type determines final model (first entity's model_config or agent default). No runtime fallback between MCP/direct-api
 - **MCP Endpoint Updates**: Entity references MCP server name; endpoint details in `.vscode/settings.json` updated centrally
 
 **Asset Format & Parameters**
+
 - **Format Specification**: Template-driven. Asset types (greeting cards, sprite-sheets, videos) are examples. Format details defined in entity-template files or Copilot prompts
 - **Parameter Source**: Flexible - entity-template files for reusable configs, or Copilot prompt for one-off customizations
 
 **DVC & Version Control**
+
 - **DVC Workflow**: Custom Copilot prompt/workflow executes `dvc add <asset>` + `git add`, then prompts user for commit approval before executing `git commit`
 - **DVC Prerequisite**: Remote storage (S3/Azure/GCS/local) configured before P1 - not part of implementation
 - **Commit Format**: Single assets: `feat(asset): add <type> with <entity1>, <entity2>`. Batches: `feat(asset): add <count> <type> variations with <entities>`
 - **Batch Commits**: All batch assets in single atomic commit
-- **Metadata**: Path references only (e.g., `entities/character/max.md`), no entity snapshots. Assumes entities unchanged for reproducibility
+- **Metadata**: Path references with version tracking (e.g., `entities/character/max.md@v2`). Entity versioning ensures reproducibility
 
 **Error Handling & Validation** (Fail-Fast Principle)
+
 - **Filename Conflicts**: Fail with error, prompt user to rename/delete/abort. No auto-overwrite or versioning
 - **DVC/Git Failures**: Stop immediately, show failure point, require manual cleanup (no auto-rollback)
 - **Batch Size Limits**: 5 assets maximum. Reject entire batch if exceeded (no partial generation)
@@ -48,6 +67,7 @@
 - **Entity Dependencies**: No automated tracking - users manually search metadata for references before deletion
 
 **Resource Constraints**
+
 - **Batch Limit**: Maximum 5 assets per batch request to prevent resource exhaustion
 
 ## User Scenarios & Testing *(mandatory)*
@@ -147,7 +167,7 @@ A content creator browses previously generated assets using VS Code's file explo
 ### Functional Requirements
 
 - **FR-001**: System MUST provide entity template structure as YAML front-matter + Markdown files stored in `entities/<type>/` subdirectories (e.g., `entities/character/`, `entities/style/`, `entities/environment/`)
-- **FR-002**: Entity files MUST follow naming pattern `entities/<type>/<name>.md` (e.g., `entities/character/max.md`). Names MUST use kebab-case with only alphanumeric characters and hyphens (no special characters). No feature prefix. Supported types: character, style, environment, entity-template.
+- **FR-002**: Entity files MUST follow naming pattern `entities/<type>/<name>.md` (e.g., `entities/character/max.md`). Names MUST use kebab-case with only alphanumeric characters and hyphens (no special characters). No feature prefix. Entity types are extensible and open-ended. Example types: character, style, environment, entity-template, script, video, image.
 - **FR-003**: System MUST support asset generation workflows via GitHub Copilot for types: informative images, greeting cards, sprite-sheets, videos
 - **FR-004**: Entity templates MUST include model_config in YAML front-matter using discriminated union by provider. For MCP: `{provider: mcp, server: <mcp-server-name>, model: <model-name>}`. For direct API: `{provider: direct-api, endpoint: <url>, api_key: ${ENV_VAR}, model: <model-name>}`. MCP server names resolve to configurations in `.vscode/settings.json`.
 - **FR-005**: System MUST provide custom Copilot prompt/workflow that tracks all generated binary assets using DVC with human-approved commit and versioning. After asset generation and validation, workflow executes `dvc add <asset>` + `git add <asset>.dvc <metadata>.yaml`, then MUST present proposed commit message to user for approval before executing `git commit`. Commit message format: `feat(asset): add <asset-type> with <entity1>, <entity2>` for single assets. Batch commits use format: `feat(asset): add <count> <asset-type> variations with <entities>` to group all batch assets in single commit. User MUST explicitly approve (via typing "yes", "commit", or confirming) before commit executes.
@@ -177,7 +197,7 @@ A content creator browses previously generated assets using VS Code's file explo
 
 - **Entity Template**: Stored as `entities/<type>/<name>.md` file (e.g., `entities/character/max.md`, `entities/entity-template/character.md`) with YAML front-matter (name, type, description, visual_properties, model_config: discriminated union by provider - MCP: {provider, server, model} or direct-api: {provider, endpoint, api_key, model}, creation_date, last_modified) + Markdown body. No feature prefix. Organized by type subdirectory. Copilot reads these files as context. MCP server names resolve from `.vscode/settings.json`. Asset type determines final model for multi-entity assets.
 - **Asset**: Generated file following pattern `<feature>-<description>.<asset-type>.<ext>` (e.g., `009-diwali-greetings-lakshmi-on-a-lotus.insta-post.png`) with feature prefix matching current feature. Stored in `content/` directory. Attributes include asset_id, asset_type, file_path (DVC-tracked), metadata_path (git-tracked YAML), entity_references (list of entity paths like `entities/character/max.md`)
-- **Asset Metadata**: YAML file (named `<asset-name>.meta.yaml`) stored in git containing generation_prompt (exact Copilot prompt used), model_name, model_version, entity_references (list of entity file paths like `entities/character/max.md` - no content snapshot, assumes entities unchanged), generation_parameters, resolution, file_format, dvc_hash, log_file (path to dedicated log file for this asset)
+- **Asset Metadata**: YAML file (named `<asset-name>.meta.yaml`) stored in git containing generation_prompt (exact Copilot prompt used), model_name, model_version, entity_references (list of entity file paths with version references like `entities/character/max.md@v2` for reproducibility), generation_parameters, resolution, file_format, dvc_hash, log_file (path to dedicated log file for this asset)
 - **Copilot Agent**: Agent file in `.github/agents/` that defines asset generation workflows (single, batch, MCP validation) and integrates with entity files and inline model configuration. Implements asset-type-determines-model resolution logic for multi-entity assets.
 - **Copilot Prompt**: Prompt template in `.github/prompts/` guiding users on how to request asset generation with entity references and model config specification
 
@@ -204,7 +224,7 @@ A content creator browses previously generated assets using VS Code's file explo
 - Users have basic familiarity with GitHub Copilot, file-based workflows, and @ file references
 - Asset generation is not real-time - acceptable latency ranges from seconds (images) to minutes (videos) depending on model
 - Entity templates are text-based descriptions (YAML + Markdown), not reference images (text-to-image workflow)
-- Entity files remain unchanged after asset generation for reproducibility - metadata only stores entity paths, not content snapshots
+- Entity files are mutable with explicit versioning and audit trail; metadata stores entity paths with version references for reproducibility
 - Storage capacity for DVC remote is sufficient for expected asset volume
 - Model selection is config-driven per entity (no automatic runtime fallback between MCP and direct API). If MCP endpoint fails, generation fails - user must update entity config to direct API manually.
 - When combining entities with different model preferences, asset type determines final model (uses first entity's model_config or Copilot agent default)
@@ -214,4 +234,3 @@ A content creator browses previously generated assets using VS Code's file explo
 - Batch asset naming uses descriptive parameter-based suffixes when semantically meaningful (e.g., `-bright`, `-sunset`), otherwise sequential `-v1`, `-v2`
 - Filesystem supports entity organization `entities/<type>/<name>.md` (no feature prefix) and asset naming `<feature>-<description>.<asset-type>.<ext>` (with feature prefix)
 - Spec-kit framework is available for constitution, planning, and task management workflows
-
