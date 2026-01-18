@@ -15,9 +15,9 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Purpose**: Create basic directory structure for entities and content
 
-- [ ] T001 Create directory structure per plan.md in entities/, content/, logs/, .github/agents/
-- [ ] T002 [P] Add .gitignore for logs/ and future .env files
-- [ ] T003 [P] Update README.md with project structure overview
+- [X] T001 Create directory structure per plan.md in entities/, content/, logs/, .github/agents/
+- [X] T002 [P] Add .gitignore for logs/ and future .env files
+- [X] T003 [P] Update README.md with project structure overview
 
 ---
 

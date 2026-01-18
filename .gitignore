@@ -19,3 +19,12 @@
 ## General
 !.git*
 !.ai
+
+## GenAI Asset System
+.env
+.env.*
+!.env.example
+*.dvc
+.dvc/cache
+logs/
+content/images/

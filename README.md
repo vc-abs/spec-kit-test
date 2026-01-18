@@ -25,3 +25,29 @@ For large implementations creating 10+ files, this project uses a **phased check
 - **Example**: See [.github/examples/phase-plan-example.md](.github/examples/phase-plan-example.md)
 
 This prevents massive 20+ file commits and enables incremental validation and rollback safety.
+
+## Features
+
+### GenAI Asset Generation System
+
+An AI-powered system for generating and managing visual assets using entity-based templates and version control.
+
+**Directory Structure:**
+
+```text
+content/
+  entities/
+    characters/      # Character entity definitions
+    styles/          # Art style templates
+    environments/    # Scene environment settings
+    scenes/          # Composed scene descriptions
+    meta-prompts/    # Reusable prompt components
+```
+
+**Status:** In development (Phase 1/9 complete)
+
+**Documentation:**
+
+- Specification: [specs/001-genai-asset-system/spec.md](specs/001-genai-asset-system/spec.md)
+- Technical Plan: [specs/001-genai-asset-system/plan.md](specs/001-genai-asset-system/plan.md)
+- Implementation Tasks: [specs/001-genai-asset-system/tasks.md](specs/001-genai-asset-system/tasks.md)
