@@ -39,7 +39,7 @@
 ## Requirement Clarity
 
 - [x] CHK013 - Is "unified entity model" quantified with specific structural constraints? [Clarity, Plan Summary]
-- [x] CHK014 - Is "entity-creator workflow" defined with measurable step-by-step process? [Clarity, Contracts/entity-creator.md]
+- [x] CHK014 - Is "entity-creator workflow" defined with measurable step-by-step process? [Clarity, Contracts/entity-creator.agent.md]
 - [x] CHK015 - Is "just-in-time dependency resolution" clarified with specific trigger conditions? [Clarity, Research §3]
 - [x] CHK016 - Are "process entities" distinguished from "output entities" with clear criteria? [Clarity, Data Model §1]
 - [x] CHK017 - Is the discriminated union for model_config unambiguous between MCP and direct-api variants? [Clarity, Data Model §2]
@@ -58,7 +58,7 @@
 - [x] CHK025 - Are P1/P2 priority labels consistent across plan.md, spec.md, and quickstart.md? [Consistency]
 - [x] CHK026 - Do entity template examples in quickstart match data-model.md structure? [Consistency, Quickstart §Step 2]
 - [x] CHK027 - Are model_config field names consistent between spec clarifications and data model? [Consistency, Data Model §2]
-- [x] CHK028 - Are dependency field formats consistent across research.md and entity-creator.md? [Consistency]
+- [x] CHK028 - Are dependency field formats consistent across research.md and entity-creator.agent.md? [Consistency]
 - [x] CHK029 - Entity type enumerations aligned: FR-002 updated to reflect extensible types with examples (character, style, environment, entity-template, script, video, image) matching data-model.md (clarified 2026-01-09)
 - [x] CHK030 - Are DVC workflow steps consistent between spec clarifications and quickstart? [Consistency, Quickstart §5]
 - [x] CHK031 - Are file naming patterns consistent across spec, data-model, and research? [Consistency]
@@ -71,7 +71,7 @@
 
 - [x] CHK034 - Can "successfully generated" be objectively verified with file existence checks? [Measurability, Spec §User Story 1]
 - [x] CHK035 - Are DVC tracking requirements verifiable with `.dvc` file presence? [Measurability, Spec §User Story 3]
-- [x] CHK036 - Can "valid YAML front-matter" be tested with schema validation? [Measurability, Contracts/entity-creator.md]
+- [x] CHK036 - Can "valid YAML front-matter" be tested with schema validation? [Measurability, Contracts/entity-creator.agent.md]
 - [x] CHK037 - Are bootstrap template creation criteria testable? [Measurability, Quickstart §5]
 - [x] CHK038 - Can dependency resolution success be measured with entity file references? [Measurability, Data Model §1]
 - [x] CHK039 - Are error message requirements specific enough to verify exact text? [Measurability, Spec Clarifications]

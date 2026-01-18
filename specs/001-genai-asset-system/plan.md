@@ -7,7 +7,7 @@
 
 ## Summary
 
-Build a **unified entity model system** where everything is an entity (templates, characters, scripts, videos, images). Entities form a dependency network (not hierarchy) where dependencies are declared in templates. The `entity-creator` workflow reads entity templates, resolves dependencies just-in-time, and creates entities (writes metadata files, executes process entities, generates binary outputs via GenAI). The system uses `entity-template.template.md` as the bootstrap; all other templates (character.template.md, video.template.md, script.template.md) are entities created from this bootstrap. Circular dependencies are allowed for relationships. Everything is version-controlled (DVC for binaries, git for text).
+Build a **unified entity model system** where everything is an entity (templates, characters, scenes, images). Entities form a dependency network (not hierarchy) where dependencies are declared in templates. The `entity-creator` workflow reads entity templates, resolves dependencies just-in-time, and creates entities (writes metadata files, executes process entities, generates binary outputs via GenAI). The system uses `entity-template.template.md` as the bootstrap; all other templates (character.template.md, scene.template.md, etc.) are entities created from this bootstrap. **MVP scope**: Image generation from scene entities. **Future examples**: video.template.md, script.template.md for multi-media workflows. Circular dependencies are allowed for relationships. Everything is version-controlled (DVC for binaries, git for text).
 
 **Key Abstraction**: Everything is an entity with dependencies. Entity-creator reads templates → resolves dependencies → creates entities (metadata + binaries + processes).
 
@@ -51,11 +51,11 @@ Build a **unified entity model system** where everything is an entity (templates
 
 **Scale/Scope**:
 
-- Entity types: 4 (character, style, environment, entity-template)
-- Asset types: 4 initial (greeting-card, informative-image, sprite-sheet, video)
+- Entity types: 5 MVP (character, style, environment, scene, entity-template)
+- Asset types: 1 MVP (image); 3 future (greeting-card, sprite-sheet, video)
 - Expected entity count: 10-50 entities
 - Expected asset count: Hundreds to thousands over project lifetime
-- User stories: 5 (P1 entities, P2 MCP validation, P3 single gen, P4 batch, P5 browse)
+- User stories: 6 (P1 entity templates, P2 scene generation, P3 MCP validation, P4 single image, P5 batch images, P6 browse)
 
 ## Constitution Check
 
@@ -70,22 +70,23 @@ Build a **unified entity model system** where everything is an entity (templates
 - Spec explicitly states "Copilot workflow, NOT CLI tool" (clarification)
 - Copilot workflows in `.github/agents/` implement template processing logic
 
-**Principle II: Test-Driven Development** ⚠️ DEVIATION (JUSTIFIED)
+**Principle II: Iterative Validation and Quality Assurance** ✅ PASS
 
-- No automated tests - this is a content generation system, not software
-- Validation is operational: "Can Copilot generate asset? Is it tracked by DVC?"
+- System implements validation → implementation → verification cycle via entity-creator agent workflow
+- Entity-creator agent iterates until successful conclusion or user abort
+- Validation is operational: "Can entity-creator agent generate asset? Is it tracked by DVC?"
 - P2 user story validates MCP connectivity through test asset generation
-- Quality gates: format compliance, resolution validation, metadata completeness (FR-014, FR-019)
-- **Entity-creator validation**: Can invoke a validator entity (planned) to validate generated entities against their descriptions (unless exceptions explicitly mentioned)
-- **Justification**: TDD applies to code; this project generates assets via external APIs with file-based validation
+- Quality gates: format compliance, resolution validation, metadata completeness (FR-014) - all template-driven
+- Hybrid validation model: optional pre-checks (`validate` command) + fail-fast generation
+- **Alignment**: Constitution Principle II now supports iterative quality cycles for content generation systems
 
-**Principle III: CLI and Text Protocols** ⚠️ DEVIATION (JUSTIFIED)
+**Principle III: CLI and Text Protocols** ✅ PASS
 
-- System uses template files + Copilot workflows, not CLI commands
+- Template-driven workflows operate through GitHub Copilot, exempt from CLI requirements per Constitution Principle III amendment
 - DVC and git are CLI tools integrated into workflow
 - Templates and metadata are text-based (YAML/Markdown)
-- Logs are plain text files
-- **Justification**: Template-centric architecture supersedes CLI requirement; underlying tools (DVC, git) are CLI-based
+- Logs are YAML arrays (human-readable plain text)
+- **Alignment**: Constitution Principle III now exempts template-driven agent systems from CLI requirements
 
 **Principle IV: Simplicity and Minimalism** ✅ PASS
 
@@ -97,23 +98,24 @@ Build a **unified entity model system** where everything is an entity (templates
 
 **Principle V: Observability and Versioning** ✅ PASS
 
-- Per-asset log files capture all generation attempts (FR-011)
+- Per-asset log files capture all generation attempts (FR-011), with logging format defined in the entity-creator agent.
 - DVC tracks binary asset versions
 - Git tracks metadata YAML files with entity references, prompts, parameters
 - Conventional commit format for assets
-- Error messages include specific failure points
+- Error messages include specific failure points (fail-fast approach)
 
 **Principle VI: Content Quality and Asset Management** ✅ PASS
 
 - DVC version control for binary assets (constitution requirement)
 - Metadata YAML files capture generation parameters, model versions, prompts
-- Quality validation gates: format compliance, resolution checks (FR-014, FR-019)
+- Quality validation gates: format compliance, resolution checks (FR-014) are template-driven and handled by entity-creator agent using fail-fast approach
 - Naming conventions enforce filesystem safety
 - Asset organization: production in `content/`, test in `content/test/`
 
-**GATE STATUS**: ✅ **PASS WITH JUSTIFIED DEVIATIONS**
+**GATE STATUS**: ✅ **PASS - CONSTITUTION COMPLIANT**
 
-- TDD and CLI deviations are appropriate for content generation system
+- Iterative validation cycle aligns with amended Principle II
+- Template-driven agent system exempt from CLI requirements per amended Principle III
 - All content-specific requirements (Principle VI) fully satisfied
 - Copilot-first principle strictly enforced
 
@@ -138,26 +140,29 @@ Build a **unified entity model system** where everything is an entity (templates
 
 **Principle I: Copilot-First Enablement** ✅ CONFIRMED
 
-- Agent contracts define clear Copilot integration points
+- Agent contracts define clear entity-creator agent integration points
 - All workflows use `@workspace` and `@entities/` references
 - No dependencies on tools outside Copilot ecosystem
-- Quickstart demonstrates Copilot-first prompts
+- Quickstart demonstrates entity-creator agent prompts
 
-**Principle II: Test-Driven Development** ✅ CONFIRMED (Deviation Justified)
+**Principle II: Iterative Validation and Quality Assurance** ✅ CONFIRMED
 
-- P2 MCP validation agent provides operational testing framework
-- Test assets in `content/test/` prove generation pipeline
-- Quality gates (FR-014, FR-019) act as validation checkpoints
-- Deviation remains justified: no code to unit test
+- Entity-creator agent implements validation → implementation → verification workflow cycle
+- Iterates until conclusion or user abort
+- Quality gates explicit in contracts (format, resolution, integrity)
+- Operational validation appropriate for content generation use case
 
-**Principle III: CLI and Text Protocols** ✅ CONFIRMED (Deviation Justified)
+**Principle III: CLI and Text Protocols** ✅ CONFIRMED
 
-- DVC CLI, git CLI integrated into agent workflows
-- All data formats are text-based (YAML, Markdown, plain text logs)
-- Stdin/stdout not applicable (Copilot agents use file I/O)
-- Deviation remains justified: Copilot-first overrides CLI-first
+- Template-driven agent system exempt per Constitution Principle III
+- DVC CLI, git CLI integrated into entity-creator agent workflows
+- All data formats are text-based (YAML, Markdown, YAML array logs)
 
 **Principle IV: Simplicity and Minimalism** ✅ CONFIRMED
+
+- Entity-creator agent uses hybrid validation model with optional pre-checks
+- Fail-fast approach for generation (no complex error recovery)
+- Manual cleanup on failures (no automatic rollback logic)
 
 - No new abstractions introduced in design
 - File-based architecture maintained (no database, no services)
@@ -167,7 +172,7 @@ Build a **unified entity model system** where everything is an entity (templates
 **Principle V: Observability and Versioning** ✅ CONFIRMED
 
 - Data model specifies ISO 8601 timestamps throughout
-- Log format documented (plain text with timestamps)
+- Log format: YAML arrays with human-readable attributes (timestamp, level, status, activity, model, model_version, duration_ms)
 - DVC + git provide dual versioning (binaries + metadata)
 - Validation report format specified in MCP validation agent
 
@@ -180,7 +185,7 @@ Build a **unified entity model system** where everything is an entity (templates
 
 **FINAL GATE STATUS**: ✅ **DESIGN PASSES CONSTITUTION COMPLIANCE**
 
-All justified deviations maintained. Design phase introduces no new violations. System architecture aligns with constitution principles I, IV, V, VI. Deviations for II (TDD) and III (CLI) remain appropriate for content generation use case.
+All principles aligned with amended constitution. Design phase introduces no violations. System architecture aligns with Principles I (Copilot-first), II (Iterative validation), III (CLI exempt), IV (Simplicity), V (Observability), VI (Content quality).
 
 ## Project Structure
 
@@ -193,7 +198,7 @@ specs/001-genai-asset-system/
 ├── data-model.md        # Phase 1 output (/speckit.plan command)
 ├── quickstart.md        # Phase 1 output (/speckit.plan command)
 ├── contracts/           # Phase 1 output (/speckit.plan command)
-│   └── entity-creator.md    # Universal workflow contract for all entity types
+│   └── entity-creator.agent.md    # Universal workflow contract for all entity types
 └── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
 ```
 
@@ -214,8 +219,7 @@ entities/                # Entity template storage
     └── *.md            # e.g., character-template.md
 
 content/                 # Generated assets (production)
-├── *.png               # Image assets (DVC-tracked)
-├── *.mp4               # Video assets (DVC-tracked)
+├── *.png               # Image assets (DVC-tracked; future: *.mp4 videos)
 ├── *.dvc               # DVC metadata files (git-tracked)
 └── *.meta.yaml         # Asset metadata (git-tracked)
 
@@ -227,7 +231,7 @@ logs/                    # Per-asset generation logs
 
 .github/                 # Copilot integration
 └── agents/              # IMPLEMENTATION: Copilot workflows (read templates)
-    ├── entity-creator.md     # Workflow: Read meta-template → create entity
+    ├── entity-creator.agent.md     # Workflow: Read meta-template → create entity
     └── asset-generator.md    # Workflow: Read entities → generate asset
 
 .vscode/                 # VS Code workspace config
@@ -237,7 +241,7 @@ logs/                    # Per-asset generation logs
 .dvc/                    # DVC configuration
 ```
 
-**Structure Decision**: Unified entity model with dependency network. Everything is an entity (templates, characters, scripts, videos, images). Entity-creator workflow reads entity templates, resolves dependencies JIT, and creates all entity types (writes metadata, executes processes, generates binaries).
+**Structure Decision**: Unified entity model with dependency network. Everything is an entity (templates, characters, scenes, images). Entity-creator workflow reads entity templates, resolves dependencies JIT, and creates all entity types (writes metadata, executes processes, generates binaries). **MVP focus**: Scene-based image generation; **Future**: video, script, audio orchestration.
 
 **No Traditional Source Code**: Notice there's no `src/`, `lib/`, or `app/` directory. System functionality comes from:
 
@@ -282,7 +286,7 @@ The "implementation" is defining the entity-creator workflow (Markdown instructi
 **Files Generated**:
 
 - [`data-model.md`](data-model.md): Entity definitions with dependency network
-- [`contracts/entity-creator.md`](contracts/entity-creator.md): Universal entity workflow (handles entity creation, asset generation, batch generation, MCP validation)
+- [`contracts/entity-creator.agent.md`](contracts/entity-creator.agent.md): Universal entity workflow (handles entity creation, asset generation, batch generation, MCP validation)
 - [`quickstart.md`](quickstart.md): Complete setup guide with examples
 
 **Key Concepts** (Unified Entity Model):
@@ -320,9 +324,9 @@ The "implementation" is defining the entity-creator workflow (Markdown instructi
 | Entity Structure & Schema | [data-model.md](data-model.md) | §1 | YAML front-matter + Markdown format |
 | Model Config (MCP vs Direct API) | [data-model.md](data-model.md) | §2 | Discriminated union for GenAI providers |
 | Asset Metadata Format | [data-model.md](data-model.md) | §4 | Git-tracked YAML for reproducibility |
-| Entity-Creator Workflow | [contracts/entity-creator.md](contracts/entity-creator.md) | Full document | Universal workflow for all entity types |
-| Workflow Validation Rules | [contracts/entity-creator.md](contracts/entity-creator.md) | §Validation Rules | Name patterns, model config checks |
-| Workflow Error Handling | [contracts/entity-creator.md](contracts/entity-creator.md) | §Error Handling | Fail-fast responses for common errors |
+| Entity-Creator Workflow | [contracts/entity-creator.agent.md](contracts/entity-creator.agent.md) | Full document | Universal workflow for all entity types |
+| Workflow Validation Rules | [contracts/entity-creator.agent.md](contracts/entity-creator.agent.md) | §Validation Rules | Name patterns, model config checks |
+| Workflow Error Handling | [contracts/entity-creator.agent.md](contracts/entity-creator.agent.md) | §Error Handling | Fail-fast responses for common errors |
 | Setup & First Entity | [quickstart.md](quickstart.md) | §Setup Steps, §First Entity Creation | Practical examples and walkthrough |
 | Naming Conventions | [research.md](research.md) | §7 | Kebab-case validation rules |
 | Error Handling Patterns | [research.md](research.md) | §6 | Fail-fast principles |
@@ -343,7 +347,7 @@ The "implementation" is defining the entity-creator workflow (Markdown instructi
 
 **Step 3: Learn the Universal Workflow** (30-45 minutes)
 
-1. Read [contracts/entity-creator.md](contracts/entity-creator.md) in full
+1. Read [contracts/entity-creator.agent.md](contracts/entity-creator.agent.md) in full
 2. Focus on "Workflow Steps (Universal)" section - this is what you'll implement
 3. Study validation rules and error handling sections
 
@@ -378,7 +382,7 @@ This is a template-driven system where system behavior is defined by data files 
   - No build artifacts (`dist/`, `build/`, `target/`)
 
 - **What you WILL be creating**:
-  - Copilot agent workflow: `.github/agents/entity-creator.md` (Markdown file with YAML front-matter)
+  - Copilot agent workflow: `.github/agents/entity-creator.agent.md` (Markdown file with YAML front-matter)
   - This agent contains instructions for Copilot on how to:
     - Read entity template files (`entities/entity-template/*.template.md`)
     - Parse YAML front-matter and extract dependencies
@@ -388,7 +392,7 @@ This is a template-driven system where system behavior is defined by data files 
 
 - **How it works**:
   1. User invokes: `@workspace /create-entity`
-  2. Copilot reads `.github/agents/entity-creator.md` workflow
+  2. Copilot reads `.github/agents/entity-creator.agent.md` workflow
   3. Copilot follows instructions: read template → validate → prompt user → write files → run DVC/git
   4. Result: New entity created, no code compiled or executed
 
@@ -424,7 +428,7 @@ This is a template-driven system where system behavior is defined by data files 
 - **Plan**: [plan.md](plan.md) (this file)
 - **Research**: [research.md](research.md)
 - **Data Model**: [data-model.md](data-model.md)
-- **Contracts**: [contracts/entity-creator.md](contracts/entity-creator.md) (universal workflow)
+- **Contracts**: [contracts/entity-creator.agent.md](contracts/entity-creator.agent.md) (universal workflow)
 - **Quickstart**: [quickstart.md](quickstart.md)
 
 ### Key Architectural Decisions
