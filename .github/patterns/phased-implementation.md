@@ -17,12 +17,14 @@ Before starting each implementation phase, create a `phase-plan-NN.md` file **in
 
 1. **Phase Goal**: What this phase accomplishes
 2. **Files to Create/Modify**: Exact list with brief descriptions
-3. **Required Inputs**: Parameters, credentials, decisions needed from user
+3. **Required Inputs**: Parameters, credentials, decisions needed from user (ALL questions must be documented in the phase plan file itself, not asked separately in chat)
 4. **Validation Steps**: How to verify phase completion
 5. **Commit Strategy**: Suggested commit message(s)
 6. **Next Phase**: What comes after (optional)
 
 **Location**: Phase plans are stored in the feature directory alongside tasks.md, plan.md, and other spec files. This keeps all feature-related artifacts together and organized.
+
+**Critical**: All user input questions MUST be written directly in the phase plan file under "Required User Inputs" section. Do not ask questions in chat - document them in the phase plan so users can review, answer, and track all inputs in one place.
 
 ## Workflow
 
