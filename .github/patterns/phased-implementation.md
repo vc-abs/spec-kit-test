@@ -13,7 +13,7 @@ Large implementations that create 20+ files in a single commit are:
 
 ## Solution: Phase Planning Files
 
-Before starting each implementation phase, create a `phase-plan.md` file that specifies:
+Before starting each implementation phase, create a `phase-plan-NN.md` file **in the feature directory** (e.g., `specs/<feature-id>/phase-plan-01.md`) that specifies:
 
 1. **Phase Goal**: What this phase accomplishes
 2. **Files to Create/Modify**: Exact list with brief descriptions
@@ -21,6 +21,8 @@ Before starting each implementation phase, create a `phase-plan.md` file that sp
 4. **Validation Steps**: How to verify phase completion
 5. **Commit Strategy**: Suggested commit message(s)
 6. **Next Phase**: What comes after (optional)
+
+**Location**: Phase plans are stored in the feature directory alongside tasks.md, plan.md, and other spec files. This keeps all feature-related artifacts together and organized.
 
 ## Workflow
 

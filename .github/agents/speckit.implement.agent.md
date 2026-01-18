@@ -54,6 +54,17 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **IF EXISTS**: Read research.md for technical decisions and constraints
    - **IF EXISTS**: Read quickstart.md for integration scenarios
 
+3a. **Phased Implementation Check**:
+   - Count incomplete tasks in tasks.md (lines matching `- [ ]`)
+   - **IF incomplete task count > 15**:
+     - Create `<FEATURE_DIR>/phase-plan-01.md` using template from `.github/patterns/phased-implementation.md`
+     - Phase plan should cover 3-8 files, 300-800 lines (see `.github/copilot-instructions.md` phased pattern section)
+     - **STOP** and prompt user: "Created phase-plan-01.md covering Phase 1 (N tasks, M files). Please review the plan and reply 'continue' when ready to proceed."
+     - Wait for user to review plan, provide required inputs, and approve with "continue"
+     - Once approved, implement ONLY the files listed in phase-plan-01.md
+     - After phase committed, create phase-plan-02.md for next phase and repeat
+   - **ELSE** (≤15 tasks): Proceed with standard implementation (no phasing required)
+
 4. **Project Setup Verification**:
    - **REQUIRED**: Create/verify ignore files based on actual project setup:
 

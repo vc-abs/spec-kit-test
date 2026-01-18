@@ -39,11 +39,12 @@ git reset               # Undo operations (allowed when fixing mistakes)
 **CRITICAL**: For implementations creating 10+ files, use phased checkpoints instead of single massive commits.
 
 **Pattern**:
-1. **Create phase plan file**: `phase-plan-[NN].md` specifying:
+1. **Create phase plan file**: `<FEATURE_DIR>/phase-plan-[NN].md` specifying:
    - Files to create/modify (3-8 per phase)
    - Required user inputs (decisions, parameters)
    - Validation steps
    - Commit message template
+   - **Location**: Phase plans must be created in the feature directory (e.g., `specs/001-genai-asset-system/phase-plan-01.md`), not the repo root
 2. **Wait for user approval**: User reviews plan, provides inputs, says "continue"
 3. **Execute phase**: Create exactly the files listed
 4. **User commits**: User reviews and commits the phase
@@ -54,7 +55,7 @@ git reset               # Undo operations (allowed when fixing mistakes)
 - **Boundaries**: Architectural layers, functional milestones, testable units
 - **Avoid**: 15+ files (too large) or 1-2 files (too granular)
 
-**Session Persistence**: Phase plans are markdown files in repo, so they survive session restarts. User can say "continue with phase-plan-03.md" to resume.
+**Session Persistence**: Phase plans are markdown files in the feature directory, so they survive session restarts. User can say "continue with phase-plan-03.md" or "continue with specs/001-genai-asset-system/phase-plan-03.md" to resume.
 
 **Reference**: See `.github/patterns/phased-implementation.md` for full workflow details and examples.
 
