@@ -15,6 +15,7 @@ Build a **unified entity model system** where everything is an entity (templates
 
 **Language/Version**: Not applicable - configuration-driven system using YAML/Markdown entity templates, no compiled code
 **Primary Dependencies**:
+
 - GitHub Copilot (required for asset generation workflows)
 - DVC (Data Version Control) for binary asset tracking (prerequisite: remote storage configured)
 - MCP (Model Context Protocol) servers OR direct GenAI API access (DALL-E, Stable Diffusion, Runway, etc.)
@@ -22,6 +23,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - Git (for text artifact version control)
 
 **Storage**:
+
 - File-based: Entity templates in `entities/<type>/`, assets in `content/`, metadata YAML in git
 - DVC remote: S3/Azure/GCS/local for binary assets (prerequisite)
 - Logs: Per-asset files in `logs/`
@@ -33,12 +35,14 @@ Build a **unified entity model system** where everything is an entity (templates
 **Project Type**: Template-driven content generation system - users define templates, Copilot generates from them
 
 **Performance Goals**:
+
 - Entity file creation: <1 minute manual workflow
 - Single asset generation: Seconds (images) to minutes (videos) depending on GenAI model latency
 - Batch generation (5 assets): <5 minutes excluding model API time
 - Asset generation success rate: >95%
 
 **Constraints**:
+
 - Naming: Kebab-case, alphanumeric + hyphens only (filesystem safety)
 - Batch limit: 5 assets maximum per request
 - No runtime fallback between MCP and direct-api (config-driven)
@@ -46,6 +50,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - Entity files assumed immutable after asset generation (metadata stores paths only)
 
 **Scale/Scope**:
+
 - Entity types: 4 (character, style, environment, entity-template)
 - Asset types: 4 initial (greeting-card, informative-image, sprite-sheet, video)
 - Expected entity count: 10-50 entities
@@ -59,12 +64,14 @@ Build a **unified entity model system** where everything is an entity (templates
 ### Initial Check (Pre-Phase 0)
 
 **Principle I: Copilot-First Enablement** ✅ PASS
+
 - Template-driven architecture: Users define templates, Copilot reads and processes them
 - Entity templates (YAML + Markdown) are Copilot-readable context files
 - Spec explicitly states "Copilot workflow, NOT CLI tool" (clarification)
 - Copilot workflows in `.github/agents/` implement template processing logic
 
 **Principle II: Test-Driven Development** ⚠️ DEVIATION (JUSTIFIED)
+
 - No automated tests - this is a content generation system, not software
 - Validation is operational: "Can Copilot generate asset? Is it tracked by DVC?"
 - P2 user story validates MCP connectivity through test asset generation
@@ -73,6 +80,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - **Justification**: TDD applies to code; this project generates assets via external APIs with file-based validation
 
 **Principle III: CLI and Text Protocols** ⚠️ DEVIATION (JUSTIFIED)
+
 - System uses template files + Copilot workflows, not CLI commands
 - DVC and git are CLI tools integrated into workflow
 - Templates and metadata are text-based (YAML/Markdown)
@@ -80,6 +88,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - **Justification**: Template-centric architecture supersedes CLI requirement; underlying tools (DVC, git) are CLI-based
 
 **Principle IV: Simplicity and Minimalism** ✅ PASS
+
 - Flat content directory (no complex hierarchy)
 - Entity templates are simple YAML + Markdown
 - No abstractions - direct file manipulation
@@ -87,6 +96,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - Manual cleanup on failures (no complex rollback logic)
 
 **Principle V: Observability and Versioning** ✅ PASS
+
 - Per-asset log files capture all generation attempts (FR-011)
 - DVC tracks binary asset versions
 - Git tracks metadata YAML files with entity references, prompts, parameters
@@ -94,6 +104,7 @@ Build a **unified entity model system** where everything is an entity (templates
 - Error messages include specific failure points
 
 **Principle VI: Content Quality and Asset Management** ✅ PASS
+
 - DVC version control for binary assets (constitution requirement)
 - Metadata YAML files capture generation parameters, model versions, prompts
 - Quality validation gates: format compliance, resolution checks (FR-014, FR-019)
@@ -101,11 +112,13 @@ Build a **unified entity model system** where everything is an entity (templates
 - Asset organization: production in `content/`, test in `content/test/`
 
 **GATE STATUS**: ✅ **PASS WITH JUSTIFIED DEVIATIONS**
+
 - TDD and CLI deviations are appropriate for content generation system
 - All content-specific requirements (Principle VI) fully satisfied
 - Copilot-first principle strictly enforced
 
 **Alignment with Copilot Instructions** (`.github/copilot-instructions.md`):
+
 - ✅ File naming: Agents use nouns, prompts use imperative verbs, all kebab-case
 - ✅ Git operations: Use `run_in_terminal` for all git commands
 - ⚠️ **Auto-commit exception**: Asset generation agents auto-commit after successful generation (FR-005 requirement). This is feature-specific behavior, not general Copilot behavior. User can still use `/commit` for manual commits of other changes.
@@ -117,42 +130,49 @@ Build a **unified entity model system** where everything is an entity (templates
 ### Post-Design Check (After Phase 1)
 
 **Design Artifacts Reviewed**:
+
 - `research.md`: 7 technical decisions documented
 - `data-model.md`: 6 entity definitions with validation rules
 - `contracts/`: 4 agent contracts (entity, asset, batch, MCP validation)
 - `quickstart.md`: Complete setup guide with examples
 
 **Principle I: Copilot-First Enablement** ✅ CONFIRMED
+
 - Agent contracts define clear Copilot integration points
 - All workflows use `@workspace` and `@entities/` references
 - No dependencies on tools outside Copilot ecosystem
 - Quickstart demonstrates Copilot-first prompts
 
 **Principle II: Test-Driven Development** ✅ CONFIRMED (Deviation Justified)
+
 - P2 MCP validation agent provides operational testing framework
 - Test assets in `content/test/` prove generation pipeline
 - Quality gates (FR-014, FR-019) act as validation checkpoints
 - Deviation remains justified: no code to unit test
 
 **Principle III: CLI and Text Protocols** ✅ CONFIRMED (Deviation Justified)
+
 - DVC CLI, git CLI integrated into agent workflows
 - All data formats are text-based (YAML, Markdown, plain text logs)
 - Stdin/stdout not applicable (Copilot agents use file I/O)
 - Deviation remains justified: Copilot-first overrides CLI-first
 
 **Principle IV: Simplicity and Minimalism** ✅ CONFIRMED
+
 - No new abstractions introduced in design
 - File-based architecture maintained (no database, no services)
 - Agent contracts are straightforward (no complex state machines)
 - Research eliminated alternatives with higher complexity
 
 **Principle V: Observability and Versioning** ✅ CONFIRMED
+
 - Data model specifies ISO 8601 timestamps throughout
 - Log format documented (plain text with timestamps)
 - DVC + git provide dual versioning (binaries + metadata)
 - Validation report format specified in MCP validation agent
 
 **Principle VI: Content Quality and Asset Management** ✅ CONFIRMED
+
 - Data model enforces metadata completeness
 - Agent contracts specify validation checkpoints
 - DVC workflow integrated into asset-generation and batch-generation agents
@@ -173,10 +193,7 @@ specs/001-genai-asset-system/
 ├── data-model.md        # Phase 1 output (/speckit.plan command)
 ├── quickstart.md        # Phase 1 output (/speckit.plan command)
 ├── contracts/           # Phase 1 output (/speckit.plan command)
-│   ├── entity-agent.md      # Copilot agent contract for entity creation
-│   ├── asset-agent.md       # Copilot agent contract for single asset generation
-│   ├── batch-agent.md       # Copilot agent contract for batch generation
-│   └── mcp-validation-agent.md  # Copilot agent contract for MCP validation
+│   └── entity-creator.md    # Universal workflow contract for all entity types
 └── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
 ```
 
@@ -220,7 +237,16 @@ logs/                    # Per-asset generation logs
 .dvc/                    # DVC configuration
 ```
 
-**Structure Decision**: Unified entity model with dependency network. Everything is an entity (templates, characters, scripts, videos, images). Entity-creator workflow reads entity templates, resolves dependencies JIT, and creates all entity types (writes metadata, executes processes, generates binaries). No source code - all functionality through entity definitions and entity-creator workflow.
+**Structure Decision**: Unified entity model with dependency network. Everything is an entity (templates, characters, scripts, videos, images). Entity-creator workflow reads entity templates, resolves dependencies JIT, and creates all entity types (writes metadata, executes processes, generates binaries).
+
+**No Traditional Source Code**: Notice there's no `src/`, `lib/`, or `app/` directory. System functionality comes from:
+
+- Entity definitions in `entities/` (YAML+Markdown data files)
+- Copilot agent workflows in `.github/agents/` (instructions for Copilot, not executable code)
+- DVC and git for version control (CLI tools, not custom code)
+- GenAI APIs for binary generation (external services)
+
+The "implementation" is defining the entity-creator workflow (Markdown instructions) that tells Copilot how to interpret and manipulate these data files. See [Key Architectural Decisions](#key-architectural-decisions) below for detailed explanation.
 
 ## Complexity Tracking
 
@@ -238,24 +264,29 @@ logs/                    # Per-asset generation logs
 **File**: [`research.md`](research.md)
 
 **Key Decisions**:
-1. MCP Integration: Server names in entities → details in `.vscode/settings.json`
-2. DVC Workflow: Custom Copilot prompt executes shell commands atomically
-3. Agent Structure: YAML agents + Markdown prompts in `.github/`
-4. Entity Format: YAML front-matter + Markdown body
-5. Dependency Resolution: Dependencies declared in templates, entities, prompts, or inferred from tacit context
-6. Error Handling: Fail-fast with detailed logging, no auto-retry
-7. Naming: Strict kebab-case validation, alphanumeric + hyphens only
+
+1. MCP Integration: Server names in entities → details in `.vscode/settings.json` → **See [research.md §1](research.md#1-mcp-model-context-protocol-integration-patterns)**
+2. DVC Workflow: Custom Copilot prompt executes shell commands atomically → **See [research.md §2](research.md#2-dvc-workflow-for-binary-asset-tracking)**
+3. Agent Structure: YAML agents + Markdown prompts in `.github/` → **See [research.md §4](research.md#4-entity-template-best-practices-yaml--markdown)**
+4. Entity Format: YAML front-matter + Markdown body → **See [research.md §4](research.md#4-entity-template-best-practices-yaml--markdown)**
+5. Dependency Resolution: Dependencies declared in templates, entities, prompts, or inferred from tacit context → **See [research.md §3](research.md#3-unified-entity-model-architecture)**
+6. Error Handling: Fail-fast with detailed logging, no auto-retry → **See [research.md §6](research.md#6-error-handling-patterns)**
+7. Naming: Strict kebab-case validation, alphanumeric + hyphens only → **See [research.md §7](research.md#7-naming-conventions-and-validation)**
+
+**For Implementers**: Read [research.md](research.md) in full before starting implementation. Pay special attention to §3 (Unified Entity Model Architecture) - this is the foundational design pattern.
 
 ---
 
 ## Phase 1 Output: Unified Entity Model Design Complete
 
 **Files Generated**:
+
 - [`data-model.md`](data-model.md): Entity definitions with dependency network
-- [`contracts/entity-creator.md`](contracts/entity-creator.md): Universal entity creation workflow specification
+- [`contracts/entity-creator.md`](contracts/entity-creator.md): Universal entity workflow (handles entity creation, asset generation, batch generation, MCP validation)
 - [`quickstart.md`](quickstart.md): Complete setup guide with examples
 
 **Key Concepts** (Unified Entity Model):
+
 1. **Everything is an Entity**: Templates, characters, scripts, videos, images all use same structure
 2. **Bootstrap**: `entity-template.template.md` (manually authored)
 3. **Template Entities**: character.template.md, script.template.md, video.template.md (created from bootstrap)
@@ -265,6 +296,7 @@ logs/                    # Per-asset generation logs
 7. **Model Config**: Discriminated union (MCP vs direct-api) in entity YAML
 
 **Entity-Creator Workflow** (Single universal workflow):
+
 1. Read entity template
 2. Discover dependencies JIT (just-in-time) from template, entity definitions, prompts, or tacit context
 3. Resolve dependencies JIT (prompt user, create if missing)
@@ -276,11 +308,100 @@ logs/                    # Per-asset generation logs
 
 ---
 
+## Implementation Roadmap
+
+### Where to Find Information
+
+| Topic | File | Section | Purpose |
+|-------|------|---------|---------|
+| Unified Entity Model Architecture | [research.md](research.md) | §3 | Core design pattern - read this first |
+| MCP Integration Pattern | [research.md](research.md) | §1 | How MCP servers connect to entities |
+| DVC Workflow | [research.md](research.md) | §2 | Asset tracking and version control |
+| Entity Structure & Schema | [data-model.md](data-model.md) | §1 | YAML front-matter + Markdown format |
+| Model Config (MCP vs Direct API) | [data-model.md](data-model.md) | §2 | Discriminated union for GenAI providers |
+| Asset Metadata Format | [data-model.md](data-model.md) | §4 | Git-tracked YAML for reproducibility |
+| Entity-Creator Workflow | [contracts/entity-creator.md](contracts/entity-creator.md) | Full document | Universal workflow for all entity types |
+| Workflow Validation Rules | [contracts/entity-creator.md](contracts/entity-creator.md) | §Validation Rules | Name patterns, model config checks |
+| Workflow Error Handling | [contracts/entity-creator.md](contracts/entity-creator.md) | §Error Handling | Fail-fast responses for common errors |
+| Setup & First Entity | [quickstart.md](quickstart.md) | §Setup Steps, §First Entity Creation | Practical examples and walkthrough |
+| Naming Conventions | [research.md](research.md) | §7 | Kebab-case validation rules |
+| Error Handling Patterns | [research.md](research.md) | §6 | Fail-fast principles |
+
+### Implementation Sequence
+
+**Step 1: Understand the Architecture** (30-60 minutes reading)
+
+1. Read [research.md §3](research.md#3-unified-entity-model-architecture) - **Core concept**: Everything is an entity with dependencies
+2. Read [research.md §4](research.md#4-entity-template-meta-architecture) - Bootstrap pattern and meta-templates
+3. Skim other research sections to understand technical decisions
+
+**Step 2: Study Entity Structure** (20-30 minutes)
+
+1. Read [data-model.md §1](data-model.md#1-entity-universal-structure) - YAML + Markdown format
+2. Read [data-model.md §2](data-model.md#2-model-config-discriminated-union) - GenAI provider configuration
+3. Study entity examples in data-model.md
+
+**Step 3: Learn the Universal Workflow** (30-45 minutes)
+
+1. Read [contracts/entity-creator.md](contracts/entity-creator.md) in full
+2. Focus on "Workflow Steps (Universal)" section - this is what you'll implement
+3. Study validation rules and error handling sections
+
+**Step 4: See It in Action** (15-20 minutes)
+
+1. Follow [quickstart.md](quickstart.md) examples
+2. Understand the user experience flow
+3. Note the manual steps marked for Phase 2 automation
+
+**Step 5: Ready for Implementation**
+
+- You now understand: unified entity model, entity-creator workflow, validation rules
+- Next: Run `/speckit.tasks` to generate implementation breakdown
+- Implementation will focus on: entity-creator workflow, DVC integration, validation logic
+
+### Key Implementation Notes
+
+**Universal Workflow**: Don't create separate logic for each entity type. The entity-creator reads templates and handles all types through the same workflow.
+
+**JIT Dependency Resolution**: Dependencies aren't pre-computed - they're discovered just-in-time from templates, entity definitions, prompts, or tacit context.
+
+**Fail-Fast Validation**: All validation happens upfront before any file writes. No partial state or rollback logic.
+
+**No Source Code - What This Actually Means**:
+
+This is a template-driven system where system behavior is defined by data files (entity templates) that Copilot interprets, not by compiled/interpreted source code.
+
+- **What you WON'T be creating**:
+  - No `src/main.py` or `src/index.js` entry points
+  - No application that "runs" with `python main.py` or `npm start`
+  - No classes/functions executing business logic
+  - No build artifacts (`dist/`, `build/`, `target/`)
+
+- **What you WILL be creating**:
+  - Copilot agent workflow: `.github/agents/entity-creator.md` (Markdown file with YAML front-matter)
+  - This agent contains instructions for Copilot on how to:
+    - Read entity template files (`entities/entity-template/*.template.md`)
+    - Parse YAML front-matter and extract dependencies
+    - Validate inputs (kebab-case names, model config structure)
+    - Generate files (`entities/<type>/<name>.md`)
+    - Execute shell commands (`dvc add`, `git add`, `git commit`)
+
+- **How it works**:
+  1. User invokes: `@workspace /create-entity`
+  2. Copilot reads `.github/agents/entity-creator.md` workflow
+  3. Copilot follows instructions: read template → validate → prompt user → write files → run DVC/git
+  4. Result: New entity created, no code compiled or executed
+
+- **Key insight**: System functionality emerges from Copilot interpreting template structure, not from runtime execution. Adding a new entity type means creating a new template file, not modifying code.
+
+---
+
 ## Phase 2: Tasks (Not Generated by /speckit.plan)
 
 **Next Command**: Run `/speckit.tasks` to generate `tasks.md` with implementation breakdown
 
 **Expected Task Categories**:
+
 1. P1: Entity Template System
 2. P2: MCP Validation Infrastructure
 3. P3: Single Asset Generation
@@ -297,16 +418,25 @@ logs/                    # Per-asset generation logs
 ## Implementation Summary
 
 ### Branch & Files
+
 - **Branch**: `001-genai-asset-system`
 - **Spec**: [spec.md](spec.md)
 - **Plan**: [plan.md](plan.md) (this file)
 - **Research**: [research.md](research.md)
 - **Data Model**: [data-model.md](data-model.md)
-- **Contracts**: [contracts/](contracts/) (4 agent contracts)
+- **Contracts**: [contracts/entity-creator.md](contracts/entity-creator.md) (universal workflow)
 - **Quickstart**: [quickstart.md](quickstart.md)
 
 ### Key Architectural Decisions
+
 1. **No Source Code**: File-based system, Copilot agents manipulate YAML/Markdown
+   - **What this means**: There's no `src/` directory with Python/JavaScript/etc. code to compile or run
+   - **Instead**: System functionality comes from entity definitions (YAML+Markdown files) that Copilot reads and processes
+   - **Implementation work**: Creating Copilot agent workflows (in `.github/agents/`) that understand how to read entity templates, resolve dependencies, generate binaries via GenAI APIs, and track with DVC
+   - **Analogy**: Like a Makefile system where rules are data (YAML), not imperative code
+   - **Example**: A `video` entity declares `dependencies: [character, script]`. The entity-creator workflow reads this declaration and prompts for missing dependencies - no hardcoded "if video then require character" logic
+   - **Why**: Extensibility without code changes. New entity types are added by creating templates, not modifying source code. Aligns with Copilot-first principle (Copilot reads templates, not APIs).
+
 2. **Discriminated Union Model Config**: Provider field determines MCP vs direct-api structure
 3. **Fail-Fast Validation**: All errors halt workflow with clear messages
 4. **Manual Cleanup**: No automatic rollback on DVC/git failures
@@ -314,6 +444,7 @@ logs/                    # Per-asset generation logs
 6. **Single Batch Commit**: All variations committed together
 
 ### Constitution Compliance
+
 - ✅ Copilot-First (Principle I): Strict adherence
 - ⚠️ TDD (Principle II): Justified deviation (operational validation)
 - ⚠️ CLI (Principle III): Justified deviation (Copilot agents primary interface)
@@ -322,6 +453,7 @@ logs/                    # Per-asset generation logs
 - ✅ Content Quality (Principle VI): DVC, metadata, validation gates
 
 ### Ready for Implementation
+
 - All technical unknowns resolved in Phase 0 research
 - Complete data model with 6 entities defined
 - 4 agent contracts specify behavior and integration points

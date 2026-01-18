@@ -18,15 +18,10 @@ This system uses a **unified entity model** where everything is an entity (templ
 
 ### 1. Validate Prerequisites
 
-Run the prerequisite checker:
+**Manual check** (automation scripts to be created in Phase 2):
 
-```bash
-.specify/scripts/bash/validate-prerequisites.sh
-```
-
-**Checks**:
-- Git 2.x+ installed
-- DVC 3.x+ installed
+- Git 2.x+ installed: `git --version`
+- DVC 3.x+ installed: `dvc --version`
 - VS Code installed
 - GitHub Copilot extension installed
 
@@ -36,18 +31,22 @@ If any checks fail, install missing tools before proceeding.
 
 ### 2. Initialize Workspace
 
-Run the workspace setup script:
+**Manual setup** (automation script to be created in Phase 2):
+
+Create directory structure:
 
 ```bash
-.specify/scripts/bash/setup-workspace.sh
+mkdir -p entities/{character,script,video,image,entity-template}
+mkdir -p content content/test logs .github/agents
 ```
 
-**Creates**:
-- Entity directories: `entities/{character,script,video,image,entity-template}`
-- Content directories: `content/`, `content/test/`
-- Logs directory: `logs/`
-- Agent directory: `.github/agents/`
-- Initializes DVC with local remote (for development)
+Initialize DVC:
+
+```bash
+dvc init
+# For local development:
+dvc remote add -d local /tmp/dvc-storage
+```
 
 **For production**: Edit `.dvc/config` to change remote storage (S3/Azure/GCS). See [DVC remote documentation](https://dvc.org/doc/command-reference/remote).
 
@@ -82,15 +81,18 @@ git commit -m "feat(config): add MCP server configurations"
 
 ### 5. Create Bootstrap Template
 
-Run the bootstrap creation script:
+**Manual creation** (automation script to be created in Phase 2):
+
+Create the master meta-template manually at `entities/entity-template/entity-template.template.md`.
+
+See [data-model.md](data-model.md) for structure and examples.
+
+**Commit** the bootstrap template:
 
 ```bash
-.specify/scripts/bash/create-bootstrap.sh
+git add entities/entity-template/entity-template.template.md
+git commit -m "feat(bootstrap): add entity-template meta-template"
 ```
-
-**Creates**: `entities/entity-template/entity-template.template.md` (the master meta-template)
-
-**Commits** the bootstrap template automatically.
 
 ---
 
