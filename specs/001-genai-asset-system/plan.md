@@ -384,7 +384,7 @@ This is a template-driven system where system behavior is defined by data files 
 - **What you WILL be creating**:
   - Copilot agent workflow: `.github/agents/entity-creator.agent.md` (Markdown file with YAML front-matter)
   - This agent contains instructions for Copilot on how to:
-    - Read entity template files (`entities/entity-template/*.template.md`)
+    - Read entity template files (`entities/entity-templates/*.template.md`)
     - Parse YAML front-matter and extract dependencies
     - Validate inputs (kebab-case names, model config structure)
     - Generate files (`entities/<type>/<name>.md`)

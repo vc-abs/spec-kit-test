@@ -89,14 +89,14 @@ Prompt: "Create a character entity named max, a friendly golden retriever"
 Plan:
   - Inputs: character.template.md
   - Dependencies: None
-  - Outputs: entities/character/max.md
+  - Outputs: entities/characters/max.md
   - Mode: Sequential
 
 Prompt: "Generate 3 sunset park scenes with different lighting"
 Plan:
   - Inputs: scene.template.md, character entities, style entities, environment entities
   - Dependencies: character/max.md, style/watercolor-soft.md, environment/sunset-park.md
-  - Outputs: entities/scene/sunset-park-v1.md, sunset-park-v2.md, sunset-park-v3.md
+  - Outputs: entities/scenes/sunset-park-v1.md, sunset-park-v2.md, sunset-park-v3.md
   - Mode: Batch (variations)
 
 Prompt: "Create sprite sheet from character max with 8 poses, using reference image walk-cycle.png"
@@ -116,7 +116,7 @@ Plan:
 **Process**:
 1. For each dependency:
    - Check if file exists
-   - If template reference: Look for \`content/entities/entity-template/<name>.template.md\`
+   - If template reference: Look for \`content/entities/entity-templates/<name>.template.md\`
    - If entity reference: Look for \`content/entities/<type>/<name>.md\`
    - If asset reference: Look for \`content/<name>.<ext>\`
 2. If dependency missing:
@@ -214,12 +214,12 @@ operations:
         - "user_prompt"
       dependencies: []
       outputs:
-        - "content/entities/character/max.md"
+        - "content/entities/characters/max.md"
       mode: "sequential"
     entities_created:
       - entity_type: "character"
         entity_name: "max"
-        file_path: "content/entities/character/max.md"
+        file_path: "content/entities/characters/max.md"
         version: "v1"
         validation_status: "pass_with_warnings"
     validation_results:
@@ -258,7 +258,7 @@ operations:
 
 \`\`\`
 User: "Create character entity max"
-Agent: [Checks content/entities/character/max.md - EXISTS]
+Agent: [Checks content/entities/characters/max.md - EXISTS]
 Agent: **ABORT** "Entity 'max' already exists. Use 'update' or specify new version '@v2'."
 \`\`\`
 
@@ -347,7 +347,7 @@ dependencies:
 ## Input Type Support
 
 **Supported Inputs**:
-- **Templates**: \`.template.md\` files in \`content/entities/entity-template/\`
+- **Templates**: \`.template.md\` files in \`content/entities/entity-templates/\`
 - **Entity References**: Existing entities in \`content/entities/<type>/\`
 - **Binary Files**: Images (\`.png\`, \`.jpg\`), audio (\`.mp3\`, \`.wav\`), video (\`.mp4\`)
 - **Configuration Files**: \`.json\`, \`.yaml\`, \`.env\`, etc.
@@ -372,6 +372,6 @@ dependencies:
 ## Related Documentation
 
 - Entity Creator Contract: [specs/001-genai-asset-system/contracts/entity-creator.md](../../specs/001-genai-asset-system/contracts/entity-creator.md)
-- Entity Template Meta-Template: [content/entities/entity-template/entity-template.template.md](../../content/entities/entity-template/entity-template.template.md)
+- Entity Template Meta-Template: [content/entities/entity-templates/entity-template.template.md](../../content/entities/entity-templates/entity-template.template.md)
 - Technical Plan: [specs/001-genai-asset-system/plan.md](../../specs/001-genai-asset-system/plan.md)
 - Phase Plan with Iterations: [specs/001-genai-asset-system/phase-plan-02.md](../../specs/001-genai-asset-system/phase-plan-02.md)

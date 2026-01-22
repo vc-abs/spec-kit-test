@@ -9,6 +9,7 @@
 This system uses a **unified entity model** where everything is an entity (templates, characters, scripts, videos, images). Entities form a dependency network. The entity-creator workflow reads templates, discovers dependencies just-in-time, and creates all entity types. Assets are version-controlled with DVC for binaries and git for metadata.
 
 **Key Concepts**:
+
 - Everything is an entity with optional dependencies
 - Templates use dot notation: `character.template.md`
 - Entity-creator fills gaps in underspecified entities
@@ -72,6 +73,7 @@ RUNWAY_API_KEY=your-key-here
 Edit `.vscode/settings.json` to add MCP server configurations. See [data-model.md](data-model.md#6-mcp-server-config-vs-code-settings) for examples.
 
 **Commit settings** (no secrets):
+
 ```bash
 git add .vscode/settings.json
 git commit -m "feat(config): add MCP server configurations"
@@ -83,14 +85,14 @@ git commit -m "feat(config): add MCP server configurations"
 
 **Manual creation** (automation script to be created in Phase 2):
 
-Create the master meta-template manually at `entities/entity-template/entity-template.template.md`.
+Create the master meta-template manually at `entities/entity-templates/entity-template.template.md`.
 
 See [data-model.md](data-model.md) for structure and examples.
 
 **Commit** the bootstrap template:
 
 ```bash
-git add entities/entity-template/entity-template.template.md
+git add entities/entity-templates/entity-template.template.md
 git commit -m "feat(bootstrap): add entity-template meta-template"
 ```
 
@@ -99,6 +101,7 @@ git commit -m "feat(bootstrap): add entity-template meta-template"
 ### 6. Run P2 Validation (MCP Connectivity Test)
 
 **In VS Code with Copilot**:
+
 ```
 @workspace /validate-mcp
 ```
@@ -122,9 +125,10 @@ Create a character.template.md using the entity-template.template.md bootstrap.
 ```
 
 **Entity-creator will**:
+
 - Read entity-template.template.md
 - Prompt for template schema fields
-- Create entities/entity-template/character.template.md
+- Create entities/entity-templates/character.template.md
 
 ---
 
@@ -140,12 +144,14 @@ Use DALL-E via MCP server.
 ```
 
 **Agent will prompt for details**:
+
 - Visual properties (species, color, personality)
 - Model config (MCP server name or direct API)
 
-**Result**: `entities/character/max.md` created
+**Result**: `entities/characters/max.md` created
 
 **Example Entity File**:
+
 ```markdown
 ---
 name: max
@@ -191,6 +197,7 @@ Dependencies: character/max, script/intro-script
 ```
 
 **Entity-creator will**:
+
 - Check if dependencies exist (character/max ✓, script/intro-script ✗)
 - Prompt to create script/intro-script first (or use existing)
 - Resolve dependencies just-in-time
@@ -212,6 +219,7 @@ cat content/001-genai-asset-system-max-birthday-card.greeting-card.meta.yaml
 ```
 
 **Example Output**:
+
 ```yaml
 asset_name: max-intro
 asset_type: video
@@ -220,7 +228,7 @@ generation_prompt: "Create a 30-second introduction featuring Max"
 model_name: gen-3-alpha
 model_version: "1.0"
 entity_references:
-  - entities/character/max.md
+  - entities/characters/max.md
   - entities/script/intro-script.md
 generation_parameters:
   duration: 30
@@ -241,6 +249,7 @@ cat logs/max-intro.log
 ```
 
 **Shows**:
+
 - Dependency resolution steps
 - API calls and responses
 - Validation checks
@@ -281,6 +290,7 @@ dvc pull
 ### Error: "Environment variable ${OPENAI_API_KEY} is undefined"
 
 **Solution**: Add the variable to `.env` file:
+
 ```bash
 echo "OPENAI_API_KEY=sk-your-key-here" >> .env
 ```
@@ -292,6 +302,7 @@ echo "OPENAI_API_KEY=sk-your-key-here" >> .env
 ### Error: "DVC tracking failed"
 
 **Solution**: Verify DVC remote is configured and accessible:
+
 ```bash
 dvc remote list
 dvc status
@@ -320,7 +331,7 @@ dvc status
 - [DVC Documentation](https://dvc.org/doc)
 - [GitHub Copilot Workspace](https://docs.github.com/copilot)
 - [MCP Specification](https://modelcontextprotocol.io)
-- [Entity Template Examples](entities/entity-template/)
+- [Entity Template Examples](entities/entity-templates/)
 
 ---
 

@@ -23,8 +23,8 @@ This system uses a **unified entity model** where everything is an entity. All e
 **Storage**: `entities/<type>/<name>.md` (metadata) + optional `content/<name>.<ext>` (binary body)
 
 **Entity Types**:
-- **Template entities**: `entities/entity-template/<type>.template.md` (e.g., character.template.md)
-- **Character entities**: `entities/character/<name>.md` (e.g., max.md)
+- **Template entities**: `entities/entity-templates/<type>.template.md` (e.g., character.template.md)
+- **Character entities**: `entities/characters/<name>.md` (e.g., max.md)
 - **Process entities**: `entities/script/<name>.md` (executable by entity-creator)
 - **Output entities**: `entities/video/<name>.md` + `content/<name>.mp4` (metadata + binary)
 - **Extensible**: Any type can be added by creating a template
@@ -87,7 +87,7 @@ name: max-intro
 type: video
 description: Introduction video featuring Max
 dependencies:
-  - entities/character/max.md
+  - entities/characters/max.md
   - entities/script/intro-script.md
 model_config:
   provider: mcp
@@ -182,7 +182,7 @@ generation_prompt: string     # Exact Copilot prompt used
 model_name: string            # Model used (e.g., dall-e-3)
 model_version: string         # Model version if available
 entity_references:            # List of entity file paths
-  - string                    # e.g., entities/character/max.md
+  - string                    # e.g., entities/characters/max.md
 generation_parameters:        # Model-specific params used
   resolution: string          # e.g., "1024x1024"
   style: string               # e.g., "vivid"
@@ -204,12 +204,12 @@ log_file: string              # Path to generation log (e.g., logs/asset-name.lo
 asset_name: 001-genai-asset-system-max-card.greeting-card
 asset_type: greeting-card
 generation_timestamp: 2026-01-05T14:30:22Z
-generation_prompt: "Generate a greeting card with @entities/character/max.md and @entities/style/watercolor.md"
+generation_prompt: "Generate a greeting card with @entities/characters/max.md and @entities/styles/watercolor.md"
 model_name: dall-e-3
 model_version: "2024-11"
 entity_references:
-  - entities/character/max.md
-  - entities/style/watercolor.md
+  - entities/characters/max.md
+  - entities/styles/watercolor.md
 generation_parameters:
   resolution: "1024x1024"
   style: vivid
@@ -232,7 +232,7 @@ log_file: logs/001-genai-asset-system-max-card.greeting-card.log
 **Structure**:
 ```
 [2026-01-05T14:30:00Z] INFO: Starting asset generation
-[2026-01-05T14:30:01Z] INFO: Validated entity references: entities/character/max.md, entities/style/watercolor.md
+[2026-01-05T14:30:01Z] INFO: Validated entity references: entities/characters/max.md, entities/styles/watercolor.md
 [2026-01-05T14:30:02Z] INFO: Resolved model config: provider=mcp, server=dalle-mcp, model=dall-e-3
 [2026-01-05T14:30:03Z] INFO: Sending prompt to GenAI API: "..."
 [2026-01-05T14:30:45Z] INFO: Received response, size: 2.3MB

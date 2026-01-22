@@ -30,7 +30,7 @@
 
 **Storage & Organization**
 
-- **Entity Storage**: YAML front-matter + Markdown files at `entities/<type>/<name>.md` (e.g., `entities/character/<name>.md`, `entities/scene/<name>.md`)
+- **Entity Storage**: YAML front-matter + Markdown files at `entities/<type>/<name>.md` (e.g., `entities/characters/<name>.md`, `entities/scenes/<name>.md`)
 - **Asset Storage**: Flexible, context-driven organization. Examples: flat `content/` for simple projects, `content/<feature>/` for feature-based organization, `content/<type>/` for type-based grouping. Test assets in dedicated `test/` subdirectory within chosen structure (e.g., `content/test/` or `content/<feature>/test/`).
 - **Naming Convention**: Kebab-case with only alphanumeric + hyphens. No special characters. Entities: `<type>/<name>.md`. Assets: `<feature>-<description>.<asset-type>.<ext>` or `<context>/<name>.<asset-type>.<ext>` depending on organization choice.
 - **Batch Naming**: Descriptive suffixes for parameter variations (e.g., `-bright`, `-sunset`), fallback to `-v1`, `-v2`
@@ -54,7 +54,7 @@
 - **DVC Prerequisite**: Remote storage (S3/Azure/GCS/local) configured before P2 (MCP validation) - not part of implementation
 - **Commit Format**: Single assets: `feat(asset): add <type> with <entity1>, <entity2>`. Batches: `feat(asset): add <count> <type> variations with <entities>`
 - **Batch Commits**: All batch assets in single atomic commit
-- **Metadata**: Path references with version tracking (e.g., `entities/character/<name>.md@v2`, `entities/scene/<name>.md@v1`). Entity versioning ensures reproducibility
+- **Metadata**: Path references with version tracking (e.g., `entities/characters/<name>.md@v2`, `entities/scenes/<name>.md@v1`). Entity versioning ensures reproducibility
 
 **Error Handling & Validation** (Fail-Fast Principle)
 
@@ -103,12 +103,12 @@ A content creator needs to define reusable entity templates (characters, styles,
 
 **Why this priority**: Foundation for all workflows. Entity templates define the structure that both validation and production workflows depend on.
 
-**Independent Test**: Can be fully tested by creating a character entity file `entities/character/<name>.md` with YAML front-matter (name, type, visual_properties, model_config with provider/endpoint/model) and Markdown description, then verifying the entity-creator agent can read and reference it in prompts.
+**Independent Test**: Can be fully tested by creating a character entity file `entities/characters/<name>.md` with YAML front-matter (name, type, visual_properties, model_config with provider/endpoint/model) and Markdown description, then verifying the entity-creator agent can read and reference it in prompts.
 
 **Acceptance Scenarios**:
 
-1. **Given** no existing entity files, **When** I create `entities/character/<name>.md` with YAML front-matter containing character attributes and model_config, **Then** the file is saved in `entities/character/` directory and the entity-creator agent can access it as context
-2. **Given** an existing style entity `entities/style/<name>.md`, **When** I update its model_config to switch from MCP to direct API, **Then** the updated configuration is persisted in YAML front-matter
+1. **Given** no existing entity files, **When** I create `entities/characters/<name>.md` with YAML front-matter containing character attributes and model_config, **Then** the file is saved in `entities/characters/` directory and the entity-creator agent can access it as context
+2. **Given** an existing style entity `entities/styles/<name>.md`, **When** I update its model_config to switch from MCP to direct API, **Then** the updated configuration is persisted in YAML front-matter
 3. **Given** multiple entities of different types, **When** I list all entities, **Then** I see entities organized by type folders (character/, style/, environment/, scene/)
 4. **Given** an entity with dependent images, **When** I attempt to delete the entity, **Then** I receive a warning about dependent images (user manually searches metadata files to identify dependencies)
 
@@ -120,13 +120,13 @@ A content creator uses the entity-creator agent to generate scene entity files (
 
 **Why this priority**: Scenes are the bridge between entity templates and image generation. Scene entities combine multiple entity types into narrative descriptions that drive image generation.
 
-**Independent Test**: Can be fully tested by prompting the entity-creator agent to generate a scene combining character, style, and environment entities, and verifying a scene .md file is created in `entities/scene/` with proper YAML front-matter and narrative description.
+**Independent Test**: Can be fully tested by prompting the entity-creator agent to generate a scene combining character, style, and environment entities, and verifying a scene .md file is created in `entities/scenes/` with proper YAML front-matter and narrative description.
 
 **Acceptance Scenarios**:
 
-1. **Given** character, style, and environment entities exist, **When** I prompt the entity-creator agent to generate a scene combining these entities, **Then** a scene .md file is created at `entities/scene/<name>.md` with entity references in YAML front-matter and narrative description in Markdown body
+1. **Given** character, style, and environment entities exist, **When** I prompt the entity-creator agent to generate a scene combining these entities, **Then** a scene .md file is created at `entities/scenes/<name>.md` with entity references in YAML front-matter and narrative description in Markdown body
 2. **Given** a scene entity file, **When** I review its YAML front-matter, **Then** I see references to source entities (character, style, environment) with version tags
-3. **Given** multiple scene entities, **When** I browse `entities/scene/` directory, **Then** I see scene files organized and ready for image generation
+3. **Given** multiple scene entities, **When** I browse `entities/scenes/` directory, **Then** I see scene files organized and ready for image generation
 
 ---
 
@@ -152,11 +152,11 @@ A content creator uses the entity-creator agent with a scene entity to generate 
 
 **Why this priority**: Core value proposition - generating production images with the entity-creator agent from scene entities. This story delivers immediate value by producing actual output, building on validated MCP infrastructure.
 
-**Independent Test**: Can be fully tested by opening a scene entity file `entities/scene/<name>.md` in workspace, prompting the entity-creator agent "Generate an image from this scene", and verifying an image is generated, tracked by DVC, with metadata.
+**Independent Test**: Can be fully tested by opening a scene entity file `entities/scenes/<name>.md` in workspace, prompting the entity-creator agent "Generate an image from this scene", and verifying an image is generated, tracked by DVC, with metadata.
 
 **Acceptance Scenarios**:
 
-1. **Given** scene entity file `entities/scene/<name>.md` exists in workspace, **When** I prompt the entity-creator agent to generate an image from the scene, **Then** the agent generates an image with descriptive name, saves it to `content/`, tracks it with DVC, and creates a metadata YAML file
+1. **Given** scene entity file `entities/scenes/<name>.md` exists in workspace, **When** I prompt the entity-creator agent to generate an image from the scene, **Then** the agent generates an image with descriptive name, saves it to `content/`, tracks it with DVC, and creates a metadata YAML file
 2. **Given** a scene entity with model_config specifying direct API endpoint, **When** I request image generation, **Then** the entity-creator agent uses the configured model from scene config and produces the image
 3. **Given** generation parameters including resolution "1024x1024", **When** I generate an image, **Then** the output matches the specified resolution
 4. **Given** a failed generation attempt, **When** the GenAI model returns an error, **Then** I see a clear error message and no partial image is saved
@@ -173,7 +173,7 @@ A content creator uses the entity-creator agent to generate multiple image varia
 
 **Acceptance Scenarios**:
 
-1. **Given** 3 scene entity files in `entities/scene/`, **When** I prompt the entity-creator agent for batch image generation from all scenes, **Then** 3 images are generated sequentially, each tracked by DVC with unique filenames
+1. **Given** 3 scene entity files in `entities/scenes/`, **When** I prompt the entity-creator agent for batch image generation from all scenes, **Then** 3 images are generated sequentially, each tracked by DVC with unique filenames
 2. **Given** batch generation parameters with variations, **When** I generate image batch, **Then** images are produced with descriptive suffixes or sequential versioning
 3. **Given** a batch operation in progress, **When** one image fails to generate, **Then** the batch continues and I receive a summary of successes and failures
 
@@ -190,7 +190,7 @@ A content creator browses previously generated images using VS Code's file explo
 **Acceptance Scenarios**:
 
 1. **Given** 20 generated images in `content/` directory, **When** I use VS Code's file search to filter by image extension (e.g., `.png`), **Then** I see images with associated metadata YAML files
-2. **Given** an image file in VS Code, **When** I open its corresponding metadata YAML file, **Then** I can see scene entity reference with path (e.g., `entities/scene/<name>.md`) and generation parameters
+2. **Given** an image file in VS Code, **When** I open its corresponding metadata YAML file, **Then** I can see scene entity reference with path (e.g., `entities/scenes/<name>.md`) and generation parameters
 3. **Given** an image tracked by DVC, **When** I run `dvc diff` in terminal, **Then** I see version history for that image
 4. **Given** multiple image directories, **When** I use VS Code's file search (Ctrl+P), **Then** I can quickly locate any image by filename
 
@@ -206,8 +206,8 @@ A content creator browses previously generated images using VS Code's file explo
 
 ### Functional Requirements
 
-- **FR-001**: System MUST provide entity template structure as YAML front-matter + Markdown files stored in `entities/<type>/` subdirectories (e.g., `entities/character/`, `entities/style/`, `entities/environment/`)
-- **FR-002**: Entity files MUST follow naming pattern `entities/<type>/<name>.md` (e.g., `entities/character/<name>.md`, `entities/scene/<name>.md`). Names MUST use kebab-case with only alphanumeric characters and hyphens (no special characters). No feature prefix. Entity types are extensible and open-ended. MVP types: character, style, environment, scene, entity-template. Future types may include: script, video, audio.
+- **FR-001**: System MUST provide entity template structure as YAML front-matter + Markdown files stored in `entities/<type>/` subdirectories (e.g., `entities/characters/`, `entities/styles/`, `entities/environments/`)
+- **FR-002**: Entity files MUST follow naming pattern `entities/<type>/<name>.md` (e.g., `entities/characters/<name>.md`, `entities/scenes/<name>.md`). Names MUST use kebab-case with only alphanumeric characters and hyphens (no special characters). No feature prefix. Entity types are extensible and open-ended. MVP types: character, style, environment, scene, entity-template. Future types may include: script, video, audio.
 - **FR-003**: System MUST support image generation workflows via GitHub Copilot from scene entities. MVP focuses on image generation; future expansion may include video, sprite-sheets, etc.
 - **FR-004**: Entity templates MUST include model_config in YAML front-matter using discriminated union by provider. For MCP: `{provider: mcp, server: <mcp-server-name>, model: <model-name>}`. For direct API: `{provider: direct-api, endpoint: <url>, api_key: ${ENV_VAR}, model: <model-name>}`. MCP server names resolve to configurations in `.vscode/settings.json`.
 - **FR-005**: System MUST provide custom Copilot prompt/workflow that tracks all generated binary assets using DVC with human-approved commit and versioning. After asset generation and validation, workflow executes `dvc add <asset>` + `git add <asset>.dvc <metadata>.yaml`, then MUST present proposed commit message to user for approval before executing `git commit`. Commit message format: `feat(asset): add <asset-type> with <entity1>, <entity2>` for single assets. Batch commits use format: `feat(asset): add <count> <asset-type> variations with <entities>` to group all batch assets in single commit. User MUST explicitly approve (via typing "yes", "commit", or confirming) before commit executes.
@@ -264,9 +264,9 @@ A content creator browses previously generated images using VS Code's file explo
 
 ### Key Entities
 
-- **Entity Template**: Stored as `entities/<type>/<name>.md` file (e.g., `entities/character/<name>.md`, `entities/scene/<name>.md`, `entities/entity-template/character.template.md`) with YAML front-matter (name, type, description, visual_properties or narrative_description, model_config: discriminated union by provider - MCP: {provider, server, model} or direct-api: {provider, endpoint, api_key, model}, creation_date, last_modified) + Markdown body. No feature prefix. Organized by type subdirectory. Copilot reads these files as context. MCP server names resolve from `.vscode/settings.json`. Scene entities reference other entities and provide narrative descriptions for image generation.
-- **Asset**: Generated image file following pattern `<feature>-<description>.image.<ext>` (e.g., `001-genai-asset-system-scene-01.image.png`) with feature prefix matching current feature. Stored in `content/` directory. Attributes include asset_id, asset_type (image), file_path (DVC-tracked), metadata_path (git-tracked YAML), scene_reference (path to scene entity like `entities/scene/<name>.md`)
-- **Asset Metadata**: YAML file (named `<asset-name>.meta.yaml`) stored in git containing generation_prompt (exact Copilot prompt used), model_name, model_version, scene_reference (scene entity path with version reference like `entities/scene/<name>.md@v1` for reproducibility), generation_parameters, resolution, file_format, dvc_hash, log_file (path to dedicated log file for this asset)
+- **Entity Template**: Stored as `entities/<type>/<name>.md` file (e.g., `entities/characters/<name>.md`, `entities/scenes/<name>.md`, `entities/entity-templates/character.template.md`) with YAML front-matter (name, type, description, visual_properties or narrative_description, model_config: discriminated union by provider - MCP: {provider, server, model} or direct-api: {provider, endpoint, api_key, model}, creation_date, last_modified) + Markdown body. No feature prefix. Organized by type subdirectory. Copilot reads these files as context. MCP server names resolve from `.vscode/settings.json`. Scene entities reference other entities and provide narrative descriptions for image generation.
+- **Asset**: Generated image file following pattern `<feature>-<description>.image.<ext>` (e.g., `001-genai-asset-system-scene-01.image.png`) with feature prefix matching current feature. Stored in `content/` directory. Attributes include asset_id, asset_type (image), file_path (DVC-tracked), metadata_path (git-tracked YAML), scene_reference (path to scene entity like `entities/scenes/<name>.md`)
+- **Asset Metadata**: YAML file (named `<asset-name>.meta.yaml`) stored in git containing generation_prompt (exact Copilot prompt used), model_name, model_version, scene_reference (scene entity path with version reference like `entities/scenes/<name>.md@v1` for reproducibility), generation_parameters, resolution, file_format, dvc_hash, log_file (path to dedicated log file for this asset)
 - **Entity-Creator Agent**: Agent file in `.github/agents/entity-creator.agent.md` that defines image generation workflows (single, batch, MCP validation) from scene entities. Implements the iterative validation → implementation → verification workflow cycle, iterating until conclusion or user abort. Validation rules are declared in asset-type templates and implemented by the agent; supports optional pre-checks via `validate` command while maintaining fail-fast behavior during generation.
 - **Prompt Template**: Prompt template in `.github/prompts/` guiding users on how to request image generation from scene entity references with model config specification
 

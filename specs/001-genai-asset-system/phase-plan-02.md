@@ -12,7 +12,7 @@
 
 ### New Files (2)
 
-1. `content/entities/entity-template/entity-template.template.md` - Bootstrap meta-template defining validation rules and quality gates structure for all entity types
+1. `content/entities/entity-templates/entity-template.template.md` - Bootstrap meta-template defining validation rules and quality gates structure for all entity types
 2. `.github/agents/entity-creator.agent.md` - Entity creation workflow implementing template-driven validation with fail-fast approach and YAML array logging format
 
 ### Implementation Tasks
@@ -72,7 +72,7 @@ Options:
 
 ## Tasks Covered (Phase 2: T004-T007)
 
-- [ ] T004: Create entity-template meta-template at `content/entities/entity-template/entity-template.template.md`
+- [ ] T004: Create entity-template meta-template at `content/entities/entity-templates/entity-template.template.md`
 - [ ] T005: Scaffold `.github/agents/entity-creator.agent.md` with workflow contract
 - [ ] T006: Implement filename-conflict detection in entity-creator agent
 - [ ] T007: Implement entity versioning with `@vN` metadata references
@@ -86,7 +86,7 @@ After implementation, verify:
 1. **Meta-template exists and is valid**:
 
    ```bash
-   cat content/entities/entity-template/entity-template.template.md
+   cat content/entities/entity-templates/entity-template.template.md
    ```
 
 2. **Entity-creator agent scaffold is complete**:
@@ -142,7 +142,7 @@ Tasks: T004-T007
 
 **Implementation Summary**:
 
-- Created `content/entities/entity-template/entity-template.template.md` with validation rules in front-matter
+- Created `content/entities/entity-templates/entity-template.template.md` with validation rules in front-matter
 - Created `.github/agents/entity-creator.agent.md` with template-driven workflow
 - Implemented filename-conflict detection (abort/update/version modes)
 - Implemented simple integer versioning (`@v1`, `@v2`, `@v3`)
@@ -367,7 +367,7 @@ None required - documentation validated successfully
 **Scenario 1: Simple Entity Creation**
 
 - Task: Create a character entity named "max" (friendly golden retriever)
-- Expected: Agent creates `content/entities/character/max.md` with proper structure
+- Expected: Agent creates `content/entities/characters/max.md` with proper structure
 - Verification:
   - [ ] Workspace file created at `content/.workspace/create-character-max-workspace.md`
   - [ ] Agent prompts for review/edit/save before creating entity
@@ -440,7 +440,7 @@ Execute tests one at a time using GitHub Copilot Chat with entity-creator agent.
 1. Agent reads entity-template.template.md to understand template structure
 2. Agent creates workspace file for template creation
 3. Agent prompts for review/edit/save
-4. Agent creates `content/entities/character/character.template.md`
+4. Agent creates `content/entities/characters/character.template.md`
 5. Template follows entity-template structure: minimal front-matter, rules in body
 6. Operation log created
 
@@ -461,11 +461,11 @@ Test Run: 2026-01-23 00:51
 Command: copilot --agent entity-creator -p "<prompt>" --allow-all-tools
 
 Agent Actions:
-1. Read content/entities/entity-template/entity-template.template.md (292 lines)
-2. Created content/entities/entity-template/character.template.md
+1. Read content/entities/entity-templates/entity-template.template.md (292 lines)
+2. Created content/entities/entity-templates/character.template.md
 
 Agent Response:
-"Character template created at content/entities/entity-template/character.template.md."
+"Character template created at content/entities/entity-templates/character.template.md."
 
 Verification Results:
 ✓ character.template.md created (227 lines, 7000 bytes)
@@ -489,7 +489,7 @@ Verification Results:
 5. ⚠️ **Workflow Deviation**: Agent skipped workspace/logging steps and went straight to file creation
 6. ⚠️ **No User Collaboration**: No interactive checkpoint for review/edit
 
-**Template Location**: `content/entities/entity-template/character.template.md`
+**Template Location**: `content/entities/entity-templates/character.template.md`
 
 **Test Result**: ✅ PASSED (with workflow notes)
 
@@ -571,7 +571,7 @@ Reviewing entity-creator.agent.md:
 
 **Testing Plan**:
 
-1. Delete `content/entities/entity-template/character.template.md`
+1. Delete `content/entities/entity-templates/character.template.md`
 2. Re-run Test 0 with same prompt
 3. Verify workspace file created BEFORE template creation
 4. Verify operation log created AFTER template creation
@@ -598,7 +598,7 @@ Step 1: Agent created workspace file
 Step 2: User replied 'continue'
 
 Step 3: Agent created outputs
-  ✓ content/entities/entity-template/character.template.md (3800 bytes)
+  ✓ content/entities/entity-templates/character.template.md (3800 bytes)
   ✓ logs/create-character-template-operation.log (YAML format, 1436 bytes)
   ✓ Agent prompted: "Reply 'looks good' or 'needs revision'"
 
@@ -638,7 +638,7 @@ Step 5: Agent updated workspace and log with completion status
 1. Agent creates workspace file: `content/.workspace/create-character-max-workspace.md`
 2. Agent prompts: "Review `.workspace/create-character-max-workspace.md`, make selections, save, and reply 'continue'."
 3. User reviews/edits workspace and replies "continue"
-4. Agent creates entity file: `content/entities/character/max.md` with YAML front-matter
+4. Agent creates entity file: `content/entities/characters/max.md` with YAML front-matter
 5. Agent creates operation log: `logs/create-character-max-operation.log`
 6. Version set to `v1`
 7. No automatic git commit
@@ -667,7 +667,7 @@ Step 1: Workspace created
 Step 2: User replied 'continue'
 
 Step 3: Outputs created
-  ✓ content/entities/character/max.md (562 bytes, v1)
+  ✓ content/entities/characters/max.md (562 bytes, v1)
   ✓ logs/create-character-max-operation.log (YAML, 809 bytes)
   ✓ Agent prompted for feedback
 
@@ -696,11 +696,11 @@ Step 1: Agent created workspace file (transient)
   ⚠️ Workspace file not persisted to disk
 
 Step 2: Agent detected max dependency
-  ✓ Checked content/entities/character/max.md exists
+  ✓ Checked content/entities/characters/max.md exists
   ✓ Included max in execution plan
 
 Step 3: Agent created outputs
-  ✓ content/entities/scene/park-morning.md (v1)
+  ✓ content/entities/scenes/park-morning.md (v1)
   ✓ logs/create-scene-park-morning-operation.log
   ✓ Agent prompted for feedback
 
@@ -716,8 +716,8 @@ Step 5: Operation log updated with approval
 ✅ Scene entity references max in multiple places:
 
 - `dependencies: [character: max]`
-- `characters: [{name: max, reference: "content/entities/character/max.md"}]`
-✅ Scene entity created at `content/entities/scene/park-morning.md`
+- `characters: [{name: max, reference: "content/entities/characters/max.md"}]`
+✅ Scene entity created at `content/entities/scenes/park-morning.md`
 ✅ Operation log shows dependency resolution in execution_plan
 ✅ Operation log lists max.md in inputs and dependencies
 ⚠️ Workspace file created transiently but not persisted (agent optimization?)
@@ -779,7 +779,7 @@ Strengthening MANDATORY WORKFLOW REQUIREMENTS section to emphasize:
 
 **Testing Plan**:
 
-1. Delete `content/entities/scene/park-morning.md` and `logs/create-scene-park-morning-operation.log`
+1. Delete `content/entities/scenes/park-morning.md` and `logs/create-scene-park-morning-operation.log`
 2. Re-run Test 2 with same prompt
 3. Verify workspace file persisted to disk
 4. If pass → proceed to Test 3
@@ -808,7 +808,7 @@ Step 3: Agent checked dependencies
   ✓ Detected max as dependency
 
 Step 4: Agent created outputs
-  ✓ content/entities/scene/park-morning.md
+  ✓ content/entities/scenes/park-morning.md
   ✓ logs/create-scene-park-morning-operation.log (992 bytes)
   ✓ Agent prompted for feedback
 
@@ -844,7 +844,7 @@ Step 6: Workspace and log updated with approval
 **Expected Behavior**:
 
 1. Agent parses prompt and identifies dependency on "max" character
-2. Agent checks if `content/entities/character/max.md` exists (from Test 1)
+2. Agent checks if `content/entities/characters/max.md` exists (from Test 1)
 3. Since max exists: References max@v1 in scene entity
 4. Agent creates workspace for scene creation
 5. Scene entity created with proper dependency reference
@@ -911,9 +911,9 @@ Step 1: Workspace created
 Step 2: User replied 'continue'
 
 Step 3: Batch outputs created
-  ✓ content/entities/character/rex.md (306 bytes, v1)
-  ✓ content/entities/character/luna.md (284 bytes, v1)
-  ✓ content/entities/character/buddy.md (287 bytes, v1)
+  ✓ content/entities/characters/rex.md (306 bytes, v1)
+  ✓ content/entities/characters/luna.md (284 bytes, v1)
+  ✓ content/entities/characters/buddy.md (287 bytes, v1)
   ✓ logs/create-characters-rex-luna-buddy-operation.log (1.3K)
   ✓ Operation log lists all 3 in entities_created array
   ✓ Agent prompted for feedback
@@ -976,7 +976,7 @@ Step 5: Workspace and log updated with approval
 
 **Expected Behavior**:
 
-1. Agent checks for existing file: `content/entities/character/max.md`
+1. Agent checks for existing file: `content/entities/characters/max.md`
 2. Agent detects filename conflict (max already exists with v2)
 3. Agent ABORTS with error message
 4. Error: "Entity 'max' already exists. Use 'update' or specify new version '@v3'."
@@ -1036,7 +1036,7 @@ Step 5: Workspace and log updated with approval
 **Expected Behavior**:
 
 1. Agent parses prompt and identifies dependency on "max" character
-2. Agent checks if `content/entities/character/max.md` exists
+2. Agent checks if `content/entities/characters/max.md` exists
 3. If exists: References max@v1 in scene entity
 4. If missing: Creates workspace file listing missing dependency with resolution options
 5. User selects resolution approach
@@ -1047,7 +1047,7 @@ Step 5: Workspace and log updated with approval
 - [ ] Agent detected "max" as dependency
 - [ ] Dependency resolution documented in workspace file
 - [ ] Scene entity references max with version (e.g., `characters: [max@v1]`)
-- [ ] Scene entity created at `content/entities/scene/park-morning.md`
+- [ ] Scene entity created at `content/entities/scenes/park-morning.md`
 - [ ] Operation log shows dependency resolution
 
 **Execution Log**:
@@ -1168,7 +1168,7 @@ Step 5: Workspace and log updated with approval
 
 **Expected Behavior**:
 
-1. Agent checks for existing file: `content/entities/character/max.md`
+1. Agent checks for existing file: `content/entities/characters/max.md`
 2. Agent detects filename conflict (max already exists as dog character)
 3. Agent ABORTS with error message
 4. Error: "Entity 'max' already exists. Use 'update' or specify new version '@v3'."
@@ -1202,7 +1202,7 @@ Step 3: Conflict detected
   ✓ Agent aborted creation
   ✓ logs/create-character-max-cat-operation.log created
   ✓ Log shows status: "error"
-  ✓ Log shows errors: ["Entity 'max' already exists at content/entities/character/max.md"]
+  ✓ Log shows errors: ["Entity 'max' already exists at content/entities/characters/max.md"]
   ✓ Workspace updated with conflict message and options
   ✓ Agent provided resolution options (update, explicit version, different name)
 
@@ -1221,7 +1221,7 @@ Step 5: User replied 'abort, this was a test'
 
 ### Test Execution Instructions
 
-1. **Setup**: Ensure `.github/agents/entity-creator.agent.md` and `content/entities/entity-template/entity-template.template.md` are in place
+1. **Setup**: Ensure `.github/agents/entity-creator.agent.md` and `content/entities/entity-templates/entity-template.template.md` are in place
 2. **Run Scenarios**: Execute each scenario by switching to `entity-creator` mode and issuing test commands
 3. **Execute One Test at a Time**: Complete Test 1, document results, get user feedback before proceeding to Test 2
 4. **Verify Results**: Check workspace files, entity files, and operation logs against verification checklists

@@ -12,19 +12,19 @@
 
 ### New Templates (4)
 
-1. `content/entities/entity-template/character.template.md` - Character entity template (ALREADY EXISTS from Test 0 - may refine)
-2. `content/entities/entity-template/style.template.md` - Style/art direction template with validation rules
-3. `content/entities/entity-template/environment.template.md` - Environment/setting template with validation rules
-4. `content/entities/entity-template/scene.template.md` - Scene template with validation rules for narrative descriptions
+1. `content/entities/entity-templates/character.template.md` - Character entity template (ALREADY EXISTS from Test 0 - may refine)
+2. `content/entities/entity-templates/style.template.md` - Style/art direction template with validation rules
+3. `content/entities/entity-templates/environment.template.md` - Environment/setting template with validation rules
+4. `content/entities/entity-templates/scene.template.md` - Scene template with validation rules for narrative descriptions
 
 ### Example Entities (6)
 
-1. `content/entities/character/hero-protagonist.md` - Example character entity
-2. `content/entities/character/wise-mentor.md` - Example character entity
-3. `content/entities/style/cinematic-realism.md` - Example style entity
-4. `content/entities/style/watercolor-dream.md` - Example style entity
-5. `content/entities/environment/ancient-library.md` - Example environment entity
-6. `content/entities/environment/neon-city.md` - Example environment entity
+1. `content/entities/characters/hero-protagonist.md` - Example character entity
+2. `content/entities/characters/wise-mentor.md` - Example character entity
+3. `content/entities/styles/cinematic-realism.md` - Example style entity
+4. `content/entities/styles/watercolor-dream.md` - Example style entity
+5. `content/entities/environments/ancient-library.md` - Example environment entity
+6. `content/entities/environments/neon-city.md` - Example environment entity
 
 ### Documentation (1)
 
@@ -94,7 +94,7 @@ Options:
 
 ### Documentation Validation
 
-- [ ] All 4 templates exist in `content/entities/entity-template/`
+- [ ] All 4 templates exist in `content/entities/entity-templates/`
 - [ ] Templates follow entity-template.template.md structure (minimal front-matter, rules in body)
 - [ ] Each template has validation rules section
 - [ ] Each template has quality gates with severity levels

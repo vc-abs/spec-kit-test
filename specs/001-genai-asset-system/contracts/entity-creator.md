@@ -10,12 +10,12 @@
 
 Everything in the system is an entity with dependencies:
 
-**Bootstrap**: `entities/entity-template/entity-template.template.md` (manually authored)
+**Bootstrap**: `entities/entity-templates/entity-template.template.md` (manually authored)
    ↓ creates
-**Template Entities**: `entities/entity-template/character.template.md`, `script.template.md`, `video.template.md`
+**Template Entities**: `entities/entity-templates/character.template.md`, `script.template.md`, `video.template.md`
    ↓ creates (with dependency resolution)
 **Concrete Entities**:
-- `entities/character/max.md` (character entity)
+- `entities/characters/max.md` (character entity)
 - `entities/script/intro-script.md` (process entity - executable)
 - `entities/video/max-intro.md` + `content/max-intro.mp4` (entity with binary body)
 
@@ -47,8 +47,8 @@ Everything in the system is an entity with dependencies:
 - **Dependency Graph**: Updated with new entity and its dependencies
 
 ### Preconditions
-- **Bootstrap exists**: `entities/entity-template/entity-template.template.md` manually authored
-- **Template exists**: `entities/entity-template/<type>.template.md` exists for target entity type
+- **Bootstrap exists**: `entities/entity-templates/entity-template.template.md` manually authored
+- **Template exists**: `entities/entity-templates/<type>.template.md` exists for target entity type
 - **Dependencies resolved**: All dependencies declared in template either exist or can be created
 - **Unique name**: No existing entity with same type and name
 
@@ -70,7 +70,7 @@ Everything in the system is an entity with dependencies:
 The workflow is template-agnostic and handles all entity types:
 
 1. **Load Template**
-   - Read `entities/entity-template/<type>.template.md`
+   - Read `entities/entity-templates/<type>.template.md`
    - Parse schema (required fields, validation rules, default values)
    - Extract dependency declarations (if any)
 
@@ -188,7 +188,7 @@ Create a character entity named "max" - a friendly golden retriever with a red c
 
 **Agent Actions**:
 1. Validate name "max" (kebab-case ✓)
-2. Check `entities/character/max.md` doesn't exist
+2. Check `entities/characters/max.md` doesn't exist
 3. Prompt for visual properties (guide user with examples)
 4. Prompt for model config (detect MCP preference, validate server exists)
 5. Generate file with structure:
@@ -215,7 +215,7 @@ last_modified: 2026-01-05
 [User's narrative description here]
 ```
 
-6. Confirm: "✓ Created entities/character/max.md"
+6. Confirm: "✓ Created entities/characters/max.md"
 
 ## Integration Points
 

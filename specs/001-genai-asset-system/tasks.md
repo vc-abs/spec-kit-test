@@ -25,7 +25,7 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Purpose**: Create the meta-template that defines how all entity templates work
 
-- [X] T004 Create entity-template meta-template at entities/entity-template/entity-template.template.md (defines validation rules and quality gates structure for asset types; used to bootstrap other templates)
+- [X] T004 Create entity-template meta-template at entities/entity-templates/entity-template.template.md (defines validation rules and quality gates structure for asset types; used to bootstrap other templates)
 - [X] T005 [P] Scaffold .github/agents/entity-creator.agent.md with workflow contract (implements template-driven validation using fail-fast approach; includes YAML array logging format specification per FR-011)
 - [X] T006 [P] Implement filename-conflict detection in entity-creator agent (abort generation if output file already exists)
 - [X] T007 [P] Implement entity versioning with `@vN` metadata references in entity YAML (allow mutable entities with audit trail)
@@ -40,10 +40,10 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Create a character entity file, verify entity-creator agent can read and reference it in prompts.
 
-- [ ] T008 [US1] Create character template at entities/entity-template/character.template.md (include validation rules)
-- [ ] T009 [US1] Create style template at entities/entity-template/style.template.md (include validation rules)
-- [ ] T010 [US1] Create environment template at entities/entity-template/environment.template.md (include validation rules)
-- [ ] T011 [US1] Create scene template at entities/entity-template/scene.template.md (include validation rules for scene descriptions)
+- [ ] T008 [US1] Create character template at entities/entity-templates/character.template.md (include validation rules)
+- [ ] T009 [US1] Create style template at entities/entity-templates/style.template.md (include validation rules)
+- [ ] T010 [US1] Create environment template at entities/entity-templates/environment.template.md (include validation rules)
+- [ ] T011 [US1] Create scene template at entities/entity-templates/scene.template.md (include validation rules for scene descriptions)
 - [ ] T012 [US1] Create example entities (one per type: character, style, environment) at entities/<type>/ with descriptive kebab-case names, YAML front-matter, and Markdown descriptions
 - [ ] T013 [US1] Validate entity file naming and kebab-case enforcement
 - [ ] T014 [US1] Document entity creation workflow in quickstart.md
@@ -56,9 +56,9 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Goal**: Generate scene entity files (Markdown descriptions) using entity-creator agent. Scenes combine character, style, and environment entities into narrative descriptions.
 
-**Independent Test**: Prompt entity-creator agent to generate a scene combining character, style, and environment entities, verify scene .md file is created in entities/scene/.
+**Independent Test**: Prompt entity-creator agent to generate a scene combining character, style, and environment entities, verify scene .md file is created in entities/scenes/.
 
-- [ ] T015 [US2] Generate scene entity file at entities/scene/ combining character, style, and environment via entity-creator agent
+- [ ] T015 [US2] Generate scene entity file at entities/scenes/ combining character, style, and environment via entity-creator agent
 - [ ] T016 [US2] Validate scene file format (YAML front-matter with entity references + Markdown narrative description)
 - [ ] T017 [US2] Document scene generation workflow in quickstart.md
 
@@ -76,7 +76,7 @@ description: "Task list for GenAI Asset Generation System feature implementation
 - [ ] T019 [US3] Initialize DVC in workspace root
 - [ ] T020 [US3] Add DVC local remote for development in .dvc/config
 - [ ] T021 [US3] Add .dvcignore for logs/ and temp files
-- [ ] T022 [US3] Create MCP config template at entities/entity-template/mcp-config.template.md (defines MCP server configuration structure)
+- [ ] T022 [US3] Create MCP config template at entities/entity-templates/mcp-config.template.md (defines MCP server configuration structure)
 - [ ] T023 [US3] Configure MCP servers in .vscode/settings.json using mcp-config template
 - [ ] T024 [US3] Add prompt template for asset generation in .github/prompts/asset-generation.md
 - [ ] T025 [US3] Add MCP and direct-api model_config examples to scene entity
