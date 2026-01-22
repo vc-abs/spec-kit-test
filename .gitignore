@@ -28,3 +28,7 @@
 .dvc/cache
 logs/
 content/images/
+
+## Testing & Temporary
+temp/
+test-results/

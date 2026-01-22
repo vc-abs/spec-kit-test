@@ -25,10 +25,10 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Purpose**: Create the meta-template that defines how all entity templates work
 
-- [ ] T004 Create entity-template meta-template at entities/entity-template/entity-template.template.md (defines validation rules and quality gates structure for asset types; used to bootstrap other templates)
-- [ ] T005 [P] Scaffold .github/agents/entity-creator.agent.md with workflow contract (implements template-driven validation using fail-fast approach; includes YAML array logging format specification per FR-011)
-- [ ] T006 [P] Implement filename-conflict detection in entity-creator agent (abort generation if output file already exists)
-- [ ] T007 [P] Implement entity versioning with `@vN` metadata references in entity YAML (allow mutable entities with audit trail)
+- [X] T004 Create entity-template meta-template at entities/entity-template/entity-template.template.md (defines validation rules and quality gates structure for asset types; used to bootstrap other templates)
+- [X] T005 [P] Scaffold .github/agents/entity-creator.agent.md with workflow contract (implements template-driven validation using fail-fast approach; includes YAML array logging format specification per FR-011)
+- [X] T006 [P] Implement filename-conflict detection in entity-creator agent (abort generation if output file already exists)
+- [X] T007 [P] Implement entity versioning with `@vN` metadata references in entity YAML (allow mutable entities with audit trail)
 
 **Checkpoint**: Foundation ready - entity-template meta-template and entity-creator agent define the system's validation logic
 
