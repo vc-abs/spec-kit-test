@@ -1,0 +1,45 @@
+# DVC Ignore Patterns
+
+# Logs and temporary files
+logs/
+*.log
+temp/
+tmp/
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+dist/
+build/
+*.pyc
+__pycache__/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test results
+test-results/
+coverage/
+.pytest_cache/
+
+# DVC internals (already ignored by DVC)
+.dvc/tmp/
+.dvc/cache/
+
+# Workspace files (temporary agent coordination)
+content/.workspace/
+
+# Large intermediate files
+*.tmp
+*.temp

@@ -25,6 +25,7 @@
 .env.*
 !.env.example
 *.dvc
+!.dvc*
 .dvc/cache
 logs/
 content/images/

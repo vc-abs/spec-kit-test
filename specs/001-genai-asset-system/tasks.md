@@ -72,13 +72,13 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Generate test image from scene entity, verify DVC tracking in content/test/.
 
-- [ ] T018 [US3] Create .env.example for API credentials (no secrets)
+- [X] T018 [US3] Create .env.example for API credentials (no secrets)
 - [ ] T019 [US3] Initialize DVC in workspace root
 - [ ] T020 [US3] Add DVC local remote for development in .dvc/config
-- [ ] T021 [US3] Add .dvcignore for logs/ and temp files
-- [ ] T022 [US3] Create MCP config template at entities/entity-templates/mcp-config.template.md (defines MCP server configuration structure)
+- [X] T021 [US3] Add .dvcignore for logs/ and temp files
+- [X] T022 [US3] Create MCP config template at entities/entity-templates/mcp-config.template.md (defines MCP server configuration structure)
 - [ ] T023 [US3] Configure MCP servers in .vscode/settings.json using mcp-config template
-- [ ] T024 [US3] Add prompt template for asset generation in .github/prompts/asset-generation.md
+- [X] T024 [US3] Add prompt template for asset generation in .github/prompts/asset-generation.md
 - [ ] T025 [US3] Add MCP and direct-api model_config examples to scene entity
 - [ ] T026 [US3] Generate test image in content/test/ from scene entity via entity-creator agent prompt (REQUIRES: API credentials)
 - [ ] T027 [US3] Track test image with DVC and commit
