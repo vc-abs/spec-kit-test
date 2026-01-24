@@ -40,13 +40,13 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Create a character entity file, verify entity-creator agent can read and reference it in prompts.
 
-- [ ] T008 [US1] Create character template at entities/entity-templates/character.template.md (include validation rules)
-- [ ] T009 [US1] Create style template at entities/entity-templates/style.template.md (include validation rules)
-- [ ] T010 [US1] Create environment template at entities/entity-templates/environment.template.md (include validation rules)
-- [ ] T011 [US1] Create scene template at entities/entity-templates/scene.template.md (include validation rules for scene descriptions)
-- [ ] T012 [US1] Create example entities (one per type: character, style, environment) at entities/<type>/ with descriptive kebab-case names, YAML front-matter, and Markdown descriptions
-- [ ] T013 [US1] Validate entity file naming and kebab-case enforcement
-- [ ] T014 [US1] Document entity creation workflow in quickstart.md
+- [X] T008 [US1] Create character template at entities/entity-templates/character.template.md (include validation rules)
+- [X] T009 [US1] Create style template at entities/entity-templates/style.template.md (include validation rules)
+- [X] T010 [US1] Create environment template at entities/entity-templates/environment.template.md (include validation rules)
+- [X] T011 [US1] Create scene template at entities/entity-templates/scene.template.md (include validation rules for scene descriptions)
+- [X] T012 [US1] Create example entities (one per type: character, style, environment) at entities/<type>/ with descriptive kebab-case names, YAML front-matter, and Markdown descriptions
+- [X] T013 [US1] Validate entity file naming and kebab-case enforcement
+- [X] T014 [US1] Document entity creation workflow in quickstart.md
 
 **Checkpoint**: Entity templates and examples are available and entity-creator agent can read them
 
