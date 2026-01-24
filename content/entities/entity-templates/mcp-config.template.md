@@ -1,244 +1,155 @@
 ---
 name: mcp-config
 type: entity-template
-description: "Template for configuring MCP (Model Context Protocol) servers for GenAI asset generation"
-version: v1
+description: "Template for MCP configuration entities used in GenAI asset generation workflows"
+version: v2
+entity-type: mcp-config
+applies-to: ["content/entities/mcp-configs/*.md"]
 ---
 
-# MCP Configuration Template
+# MCP Config Entity Template
 
 ## Purpose
 
-Defines the structure for configuring MCP servers that enable Copilot to interact with GenAI providers for image generation, video creation, and other asset workflows.
+Defines standalone MCP configuration entities that specify how to invoke GenAI providers for asset generation. These entities are resolved by the entity creator and referenced during image/video generation workflows.
 
-## MCP Server Types
+## Entity Structure
 
-### 1. Image Generation Server
+```yaml
+---
+name: <config-name>
+type: mcp-config
+description: "<human-readable description of configuration>"
+version: v1
+provider: <provider-name>  # google, openai, stability, anthropic
+model: <model-identifier>  # e.g., imagen-3.0-generate-001
+server: <mcp-server-name>  # Must match .vscode/settings.json MCP server
+parameters:
+  aspect-ratio: <ratio>  # "1:1", "16:9", "9:16", "4:3"
+  quality: <quality>     # "standard", "high", "premium"
+  safety-filter: <level> # "none", "low", "medium", "high"
+  prompt-enhancement: <boolean>  # true/false
+  # Additional provider-specific parameters
+tags: [<tag1>, <tag2>]
+---
 
-**Purpose**: Generate images from text prompts using GenAI models (Gemini Imagen, DALL-E, Stable Diffusion)
+# <Config Name>
 
-**Configuration**:
+<Description of when to use this configuration>
 
-```json
-{
-  "mcpServers": {
-    "gemini-imagen": {
-      "command": "npx",
-      "args": ["-y", "@google/generative-ai-mcp-server"],
-      "env": {
-        "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}",
-        "MODEL_NAME": "imagen-3.0-generate-001"
-      }
-    }
-  }
-}
+## Use Cases
+
+- <Use case 1>
+- <Use case 2>
+
+## Parameters
+
+- **aspect_ratio**: <explanation>
+- **quality**: <explanation>
+- **safety_filter**: <explanation>
+
+## Notes
+
+<Any additional context or limitations>
 ```
-
-**Capabilities**:
-
-- Generate images from text prompts
-- Support various aspect ratios (1:1, 16:9, 9:16)
-- Control image quality and style
-- Safety filtering and content moderation
-
-### 2. Asset Management Server (Future)
-
-**Purpose**: Manage generated assets, track versions, coordinate DVC
-
-**Configuration**: TBD in future phases
-
-### 3. Workflow Orchestration Server (Future)
-
-**Purpose**: Coordinate multi-step generation workflows (e.g., storyboard → images → video)
-
-**Configuration**: TBD in future phases
 
 ## Required Fields
 
-### Core Configuration
+- **name** (string): Unique identifier in kebab-case
+- **type** (string): Must be "mcp-config"
+- **description** (string): Human-readable description
+- **version** (string): Version identifier (e.g., v1, v2)
+- **provider** (string): GenAI provider name (google, openai, stability, anthropic)
+- **model** (string): Specific model identifier
+- **server** (string): MCP server name matching `.vscode/settings.json`
+- **parameters** (object): Generation parameters
 
-- **server_name** (string): Unique identifier for the MCP server
-- **command** (string): Executable command to start the server
-- **args** (array[string]): Command-line arguments
-- **env** (object): Environment variables (API keys, model names)
+## Optional Fields
 
-### Optional Fields
+- **tags** (array[string]): Categorization tags
+- **enabled** (boolean): Whether configuration is active (default: true)
+- **cost-tier** (string): Relative cost indicator (low, medium, high)
 
-- **description** (string): Human-readable server description
-- **enabled** (boolean): Whether server is active (default: true)
-- **timeout** (number): Server startup timeout in milliseconds
-- **capabilities** (array[string]): List of supported operations
+## Parameter Fields
 
-## Environment Variables Pattern
+Common parameters across providers:
 
-MCP servers should reference environment variables from `.env` file:
+- **aspect-ratio** (string): Image dimensions ratio
+- **quality** (string): Generation quality level
+- **safety-filter** (string): Content moderation level
+- **prompt-enhancement** (boolean): Enable automatic prompt improvements
 
-```json
-"env": {
-  "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}",
-  "MODEL_NAME": "${env:GEMINI_IMAGE_MODEL}"
-}
-```
-
-**Never hard-code API keys** in VS Code settings or MCP configurations.
-
-## VS Code Settings Integration
-
-MCP servers are configured in `.vscode/settings.json`:
-
-```json
-{
-  "mcp": {
-    "servers": {
-      "gemini-imagen": {
-        "command": "npx",
-        "args": ["-y", "@google/generative-ai-mcp-server"],
-        "env": {
-          "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}"
-        }
-      }
-    }
-  }
-}
-```
-
-## Model Config in Entity Files
-
-Scene entities reference MCP servers via `model_config` field:
-
-### MCP Variant
-
-```yaml
-model_config:
-  type: mcp
-  server: gemini-imagen
-  model: imagen-3.0-generate-001
-  parameters:
-    aspect_ratio: "1:1"
-    quality: "high"
-    safety_filter: "medium"
-```
-
-### Direct API Variant
-
-```yaml
-model_config:
-  type: direct-api
-  provider: google
-  model: imagen-3.0-generate-001
-  api_key_env: GOOGLE_API_KEY
-  parameters:
-    aspect_ratio: "1:1"
-    quality: "high"
-```
+Provider-specific parameters should be documented in entity description.
 
 ## Validation Rules
 
-### VR-MCP-001: Server Name Format
+### VR-MCP-001: Server Name Match
 
+- MCP config `server` field must reference an existing MCP server in `.vscode/settings.json`
 - Server name must use kebab-case
-- Only alphanumeric characters and hyphens
-- Must be unique across all MCP servers
 
-### VR-MCP-002: Command Executable
+### VR-MCP-002: Provider Model Consistency
 
-- Command must be a valid executable (npx, node, python, etc.)
-- Args array must contain valid command-line arguments
+- Model identifier must be valid for the specified provider
+- Example: `imagen-3.0-generate-001` valid for `provider: google`
 
-### VR-MCP-003: Environment Variables
+### VR-MCP-003: Parameter Schema
 
-- All API keys must be referenced via `${env:VAR_NAME}`
-- Environment variables must be defined in `.env` file
-- Never store secrets directly in configuration
+- Required parameters: aspect_ratio, quality, safety_filter
+- Values must be from documented options
+- Additional provider-specific parameters allowed
 
-### VR-MCP-004: Model Config Type
+### VR-MCP-004: Version Format
 
-- `model_config.type` must be either "mcp" or "direct-api"
-- MCP type requires `server` field matching MCP server name
-- Direct API type requires `provider` and `api_key_env` fields
+- Version must follow pattern: v\d+ (e.g., v1, v2, v10)
 
 ## Quality Gates
 
-### QG-MCP-001: API Key Security (critical)
+### QG-MCP-001: Server Configuration Exists (critical)
 
-- **Check**: No hard-coded API keys in any configuration file
-- **Fix**: Move all API keys to `.env` file, reference via `${env:VAR_NAME}`
-- **Why**: Prevents credential leakage in version control
+- **Check**: Referenced MCP server exists in `.vscode/settings.json`
+- **Fix**: Add server configuration or update entity `server` field
+- **Why**: Missing server prevents asset generation
 
-### QG-MCP-002: Server Configuration Valid (critical)
+### QG-MCP-002: Model Compatibility (critical)
 
-- **Check**: MCP server configuration is syntactically correct JSON
-- **Fix**: Validate JSON syntax, fix malformed configuration
-- **Why**: Invalid configuration prevents MCP server startup
+- **Check**: Model identifier valid for provider
+- **Fix**: Update model to match provider capabilities
+- **Why**: Invalid model causes API errors
 
-### QG-MCP-003: Model Name Consistency (warning)
+### QG-MCP-003: Parameter Values Valid (warning)
 
-- **Check**: Model name in entity `model_config` matches MCP server model
-- **Fix**: Update model name to match server configuration
-- **Why**: Mismatched models cause generation failures
+- **Check**: Parameter values within documented ranges
+- **Fix**: Adjust to valid options or add documentation
+- **Why**: Invalid parameters may be ignored or cause errors
 
-### QG-MCP-004: Environment Variables Defined (warning)
+### QG-MCP-004: Cost Awareness (info)
 
-- **Check**: All referenced env vars exist in `.env.example`
-- **Fix**: Add missing variables to `.env.example` with placeholder values
-- **Why**: Missing env vars cause runtime errors
+- **Check**: High-cost configurations marked with cost_tier
+- **Fix**: Add cost_tier field to expensive configurations
+- **Why**: Helps users make informed decisions
 
-## Example: Gemini Imagen Configuration
+## Entity Resolution
 
-**VS Code Settings** (`.vscode/settings.json`):
+During asset generation, the entity creator resolves MCP configs:
 
-```json
-{
-  "mcp": {
-    "servers": {
-      "gemini-imagen": {
-        "command": "npx",
-        "args": ["-y", "@google/generative-ai-mcp-server"],
-        "env": {
-          "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}",
-          "MODEL_NAME": "imagen-3.0-generate-001"
-        }
-      }
-    }
-  }
-}
+1. **From Prompt**: User specifies config by name (e.g., "use gemini-high-quality")
+2. **From Scene**: Scene references config via tags or inference
+3. **Default**: Falls back to provider default configuration
+
+Example prompt usage:
+
+```
+@entity-creator generate image for hero-library-quest using gemini-high-quality config
 ```
 
-**Scene Entity** (`hero-library-quest.md`):
+## Integration with Asset Generation
 
-```yaml
----
-name: hero-library-quest
-type: scene
-# ... other fields ...
-model_config:
-  type: mcp
-  server: gemini-imagen
-  model: imagen-3.0-generate-001
-  parameters:
-    aspect_ratio: "1:1"
-    quality: "high"
-    safety_filter: "medium"
-    prompt_enhancement: true
----
-```
+MCP config entities are used in the asset generation workflow:
 
-**Environment File** (`.env`):
-
-```bash
-GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_IMAGE_MODEL=imagen-3.0-generate-001
-```
-
-## Usage Notes
-
-MCP configuration enables Copilot to generate assets directly through VS Code by:
-
-1. Reading scene entity with `model_config` field
-2. Resolving MCP server from `model_config.server` name
-3. Starting MCP server with configured environment
-4. Sending generation request with scene narrative and parameters
-5. Receiving generated image and metadata
-6. Tracking image with DVC and creating metadata YAML
-
-This template supports both MCP-based (integrated) and direct-api (standalone) workflows for flexibility.
+1. Entity creator reads scene entity
+2. Resolves appropriate MCP config (from prompt or inference)
+3. Loads MCP server configuration from `.vscode/settings.json`
+4. Constructs generation request combining scene narrative + MCP parameters
+5. Invokes MCP server to generate asset
+6. Saves output and tracks with DVC
