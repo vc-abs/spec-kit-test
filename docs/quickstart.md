@@ -173,6 +173,199 @@ style: "cinematic-realism"
 
 References are validated to ensure referenced entities exist.
 
+## Scene Generation Workflow
+
+Scenes are the composition layer that brings together characters, environments, and styles into narrative contexts. They serve as the primary input for image generation workflows.
+
+### Creating Scenes with Entity-Creator
+
+#### Step 1: Identify Entity Dependencies
+
+Before creating a scene, identify which entities you want to compose:
+
+- **Characters**: Who appears in the scene? (e.g., `hero-protagonist`, `max`)
+- **Environment**: Where does the scene take place? (e.g., `ancient-library`, `neon-city`)
+- **Style**: What visual treatment should be applied? (e.g., `cinematic-realism`, `watercolor-dream`)
+
+All entity references are **optional** - scenes can be standalone or reference existing entities.
+
+#### Step 2: Craft the Scene Prompt
+
+Use the entity-creator agent with a descriptive prompt:
+
+**Example 1: Scene with Entity References**
+
+```text
+@entity-creator Create a scene called "hero-library-quest" where the hero-protagonist
+explores the ancient-library seeking legendary knowledge. Use cinematic-realism style
+for dramatic lighting. The hero searches through towering shelves of dusty tomes,
+looking for a legendary artifact mentioned in ancient prophecies.
+```
+
+**Example 2: Standalone Scene (No References)**
+
+```text
+@entity-creator Create a scene called "sunset-meditation" with a peaceful setting where
+a figure meditates on a mountaintop at golden hour. The mood is serene and contemplative,
+with warm orange and purple skies.
+```
+
+#### Step 3: Review Generated Scene
+
+The entity-creator agent will:
+
+1. Create workspace file for review
+2. Resolve entity dependencies (verify referenced entities exist)
+3. Generate scene file with YAML front-matter + Markdown narrative
+4. Log operation to `logs/create-scene-<name>-operation.log`
+
+**Generated Scene Structure**:
+
+```yaml
+---
+name: hero-library-quest
+type: scene
+description: "Brave hero explores ancient library seeking legendary knowledge"
+version: v1
+narrative: "The hero ventures deep into the ancient library..."
+setting: "Deep within the ancient library's oldest wing..."
+mood: "mysterious, determined, awe-inspiring"
+characters: ["hero-protagonist"]
+environment: "ancient-library"
+style: "cinematic-realism"
+---
+
+Detailed narrative description in Markdown...
+```
+
+#### Step 4: Validate Scene Quality
+
+Check the created scene against quality gates:
+
+- ✅ **QG-SCENE-001**: Narrative defined and descriptive
+- ✅ **QG-SCENE-002**: Setting established (where/when)
+- ✅ **QG-SCENE-003**: Mood conveyed (emotional tone)
+- ✅ **QG-SCENE-004**: Entity references valid (if present)
+
+#### Step 5: Use Scene for Asset Generation
+
+Once validated, the scene entity can be used as input for:
+
+- **Image generation** (Phase 5+)
+- **Video generation** (future)
+- **Animation sequences** (future)
+- **Asset variations** (multiple renders from same scene)
+
+### Scene Composition Patterns
+
+#### Pattern 1: Full Composition (All References)
+
+```yaml
+characters: ["hero-protagonist", "wise-mentor"]
+environment: "ancient-library"
+style: "cinematic-realism"
+```
+
+**Use when**: You want maximum consistency with existing entity definitions.
+
+#### Pattern 2: Partial Composition (Some References)
+
+```yaml
+characters: ["max"]
+style: "watercolor-dream"
+# No environment reference - described in setting field
+```
+
+**Use when**: You want flexibility while maintaining some consistency.
+
+#### Pattern 3: Standalone (No References)
+
+```yaml
+# No entity references
+# All context in narrative, setting, and mood fields
+```
+
+**Use when**: Creating one-off scenes or rapid prototyping.
+
+### Common Scene Generation Issues
+
+#### Issue: "Referenced entity not found"
+
+**Problem**: Scene references an entity that doesn't exist.
+
+**Solution**:
+
+1. Check entity exists: `ls content/entities/characters/<name>.md`
+2. Verify spelling matches exactly (case-sensitive)
+3. Create missing entity first, then retry scene
+
+#### Issue: "Narrative too vague"
+
+**Problem**: Scene description lacks specificity for asset generation.
+
+**Solution**:
+
+- Add concrete details: lighting, positioning, actions
+- Specify mood and emotional tone
+- Include visual elements: colors, textures, atmosphere
+
+#### Issue: "Entity references don't match setting"
+
+**Problem**: Referenced entities contradict scene description.
+
+**Solution**:
+
+- Review referenced entity descriptions
+- Ensure setting is compatible (e.g., don't put medieval character in cyberpunk environment)
+- Update scene narrative to resolve conflicts
+
+### Example Scenes
+
+#### Example 1: Hero Library Quest
+
+```yaml
+---
+name: hero-library-quest
+type: scene
+description: "Brave hero explores ancient library seeking legendary knowledge"
+version: v1
+narrative: "The hero-protagonist ventures deep into the ancient library, searching through towering shelves"
+setting: "Deep within the ancient library's oldest wing"
+mood: "mysterious, determined, awe-inspiring"
+characters: ["hero-protagonist"]
+environment: "ancient-library"
+style: "cinematic-realism"
+---
+```
+
+**Pattern**: Full composition with all entity types referenced.
+
+#### Example 2: Max's Golden Morning
+
+```yaml
+---
+name: max-golden-morning
+type: scene
+description: "Max enjoys a joyful morning run through the park"
+version: v1
+narrative: "Max bounds across the dewy grass with unbridled enthusiasm"
+setting: "Neighborhood park at sunrise"
+mood: "joyful, energetic, warm"
+characters: ["max"]
+style: "watercolor-dream"
+---
+```
+
+**Pattern**: Partial composition with character and style, environment described in setting.
+
+### Scene Template Reference
+
+For complete field specifications and validation rules, see:
+
+- **Template**: [scene.template.md](../content/entities/entity-templates/scene.template.md)
+- **Validation Rules**: VR-SCENE-001 through VR-SCENE-003
+- **Quality Gates**: QG-SCENE-001 through QG-SCENE-004
+
 ## Directory Structure
 
 ```
@@ -184,9 +377,15 @@ content/entities/
 │   └── environment.template.md
 ├── characters/           # Character entities
 │   ├── hero-protagonist.md
-│   └── wise-mentor.md
+│   ├── wise-mentor.md
+│   ├── max.md
+│   ├── rex.md
+│   ├── luna.md
+│   └── buddy.md
 ├── scenes/               # Scene entities
-│   └── morning-walk.md
+│   ├── hero-library-quest.md
+│   ├── max-golden-morning.md
+│   └── park-morning.md
 ├── styles/               # Style entities
 │   ├── cinematic-realism.md
 │   └── watercolor-dream.md

@@ -58,9 +58,9 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Prompt entity-creator agent to generate a scene combining character, style, and environment entities, verify scene .md file is created in entities/scenes/.
 
-- [ ] T015 [US2] Generate scene entity file at entities/scenes/ combining character, style, and environment via entity-creator agent
-- [ ] T016 [US2] Validate scene file format (YAML front-matter with entity references + Markdown narrative description)
-- [ ] T017 [US2] Document scene generation workflow in quickstart.md
+- [X] T015 [US2] Generate scene entity file at entities/scenes/ combining character, style, and environment via entity-creator agent
+- [X] T016 [US2] Validate scene file format (YAML front-matter with entity references + Markdown narrative description)
+- [X] T017 [US2] Document scene generation workflow in quickstart.md
 
 **Checkpoint**: Scene generation workflow is functional; scenes serve as input for image generation
 
