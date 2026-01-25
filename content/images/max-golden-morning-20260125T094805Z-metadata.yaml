@@ -1,0 +1,49 @@
+---
+asset-id: "max-golden-morning-20260125T094805Z"
+asset-name: "max-golden-morning"
+timestamp: "2026-01-25T09:48:05Z"
+type: "image"
+format: "PNG"
+file-path: "content/images/max-golden-morning-20260125T094805Z.png"
+size-bytes: 1125559
+dimensions: "1024x1024"
+aspect-ratio: "1:1"
+
+source-scene: "max-golden-morning"
+scene-file: "content/entities/scenes/max-golden-morning.md"
+
+entities-resolved:
+  characters:
+    - name: "max"
+      file: "content/entities/characters/max.md"
+  styles:
+    - name: "watercolor-dream"
+      file: "content/entities/styles/watercolor-dream.md"
+
+prompt-used: "Max's golden morning. The first rays of sunrise paint the park in soft pastels as Max, a golden retriever, races across the grass, his golden fur catching the light like a living flame. Each bound is pure joy, each bark a celebration. His owner throws the tennis ball in a high arc, and Max's eyes track it with laser focus before he launches into a sprint. When he returns, ball proudly held, his tail wags so hard his whole body wiggles. The grass is wet with dew, the air is fresh and cool. Watercolor dream style, sunrise lighting, joyful and energetic atmosphere."
+
+generation-params:
+  model: "gemini-imagen"
+  aspect-ratio: "1:1"
+  output-format: "image/png"
+
+scene-metadata:
+  description: "Max enjoys a joyful morning run through the park as golden sunlight breaks through trees"
+  narrative: "Max bounds across the dewy grass with unbridled enthusiasm, tail wagging as he chases after his favorite tennis ball in the early morning light"
+  setting: "Neighborhood park at sunrise, open lawn with scattered trees casting long shadows"
+  mood: "joyful, energetic, warm"
+  time_of_day: "sunrise"
+  weather: "clear"
+
+tags:
+  - "dog"
+  - "park"
+  - "morning"
+  - "play"
+  - "joy"
+
+created-by: "entity-creator"
+operation-type: "batch-asset-generation"
+batch-id: "batch-generate-trilogy-20260125T094805Z"
+---
+

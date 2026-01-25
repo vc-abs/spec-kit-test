@@ -1,0 +1,24 @@
+---
+scene: park-morning
+timestamp: 20260125T145556Z
+generated_at: "2026-01-25T14:55:56Z"
+format: png
+aspect_ratio: "1:1"
+output_path: content/images/park-morning-20260125T145556Z.png
+entities:
+  characters:
+    - max
+prompt: >
+  A bright, sunny morning at a local dog park. Max, a friendly medium-sized golden retriever with
+  fluffy golden fur, a red collar with bone-shaped tag, and a wagging tail, runs and plays joyfully.
+  Max is playing fetch with his favorite ball, bounding across dewy grass with other dogs. Soft golden
+  morning light illuminates the scene with warm tones. Dew sparkles on the grass, families enjoy the
+  peaceful morning atmosphere. Open park setting with scattered trees, clear sky, wholesome and energetic
+  mood. Natural photographic style capturing the warmth and joy of a perfect park morning.
+tags:
+  - park
+  - morning
+  - dog
+  - max
+---
+

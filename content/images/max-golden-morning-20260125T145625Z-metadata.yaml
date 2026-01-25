@@ -1,0 +1,32 @@
+---
+scene: max-golden-morning
+timestamp: 20260125T145625Z
+generated_at: "2026-01-25T14:56:25Z"
+format: png
+aspect_ratio: "1:1"
+output_path: content/images/max-golden-morning-20260125T145625Z.png
+entities:
+  characters:
+    - max
+  styles:
+    - watercolor-dream
+prompt: >
+  Max, a friendly golden retriever with fluffy golden fur and red collar with bone-shaped tag, bounds
+  across dewy grass at sunrise with unbridled enthusiasm. His tail wags energetically as he chases after
+  his favorite tennis ball in the early morning light. Neighborhood park at sunrise with open lawn and
+  scattered trees casting long shadows. The first rays of sunrise paint the park in soft pastels, Max's
+  golden fur catching the light like a living flame. Pure joy and celebration in every bound. Dewy grass,
+  fresh cool air, clear weather. Soft watercolor painting aesthetic with flowing colors and dreamlike
+  atmosphere, pastel hues with gentle gradients, whimsical and serene mood. Watercolor textures with soft
+  edges create an ethereal, imaginative scene of a perfect joyful morning.
+tags:
+  - dog
+  - park
+  - morning
+  - play
+  - joy
+  - watercolor-dream
+variation: true
+variation_of: max-golden-morning-20260125T090658Z
+---
+

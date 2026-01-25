@@ -1,0 +1,50 @@
+---
+asset-id: "hero-library-quest-20260125T094805Z"
+asset-name: "hero-library-quest"
+timestamp: "2026-01-25T09:48:05Z"
+type: "image"
+format: "PNG"
+file-path: "content/images/hero-library-quest-20260125T094805Z.png"
+size-bytes: 860481
+dimensions: "1024x1024"
+aspect-ratio: "1:1"
+
+source-scene: "hero-library-quest"
+scene-file: "content/entities/scenes/hero-library-quest.md"
+
+entities-resolved:
+  characters:
+    - name: "hero-protagonist"
+      file: "content/entities/characters/hero-protagonist.md"
+  environments:
+    - name: "ancient-library"
+      file: "content/entities/environments/ancient-library.md"
+  styles:
+    - name: "cinematic-realism"
+      file: "content/entities/styles/cinematic-realism.md"
+
+prompt-used: "Brave hero explores ancient library seeking legendary knowledge. The hero stands before an impossibly tall bookshelf, its ancient volumes stretching up into shadow. Magical orbs cast warm amber light across leather-bound tomes and stone pillars. Dust motes dance in the air as the hero carefully pulls a massive book from the shelf, its cover marked with symbols from a forgotten age. The library seems endless, each corridor revealing more mysteries. The hero's determined expression is illuminated by the soft glow, eyes scanning pages of ancient text. Cinematic realism style, perpetual twilight lighting, mysterious and determined atmosphere."
+
+generation-params:
+  model: "gemini-imagen"
+  aspect-ratio: "1:1"
+  output-format: "image/png"
+
+scene-metadata:
+  description: "Brave hero explores ancient library seeking legendary knowledge"
+  narrative: "The hero-protagonist ventures deep into the ancient library, searching through towering shelves of dusty tomes for a legendary artifact mentioned in cryptic prophecies"
+  setting: "Deep within the ancient library's oldest wing, surrounded by endless rows of weathered books and magical floating lights"
+  mood: "mysterious, determined, awe-inspiring"
+  time_of_day: "perpetual twilight"
+
+tags:
+  - "quest"
+  - "discovery"
+  - "library"
+  - "hero"
+
+created-by: "entity-creator"
+operation-type: "batch-asset-generation"
+batch-id: "batch-generate-trilogy-20260125T094805Z"
+---
+

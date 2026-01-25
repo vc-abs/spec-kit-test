@@ -1,0 +1,33 @@
+---
+scene: hero-library-quest
+timestamp: 20260125T145530Z
+generated_at: "2026-01-25T14:55:30Z"
+format: png
+aspect_ratio: "1:1"
+output_path: content/images/hero-library-quest-20260125T145530Z.png
+entities:
+  characters:
+    - hero-protagonist
+  environments:
+    - ancient-library
+  styles:
+    - cinematic-realism
+prompt: >
+  Brave young human adventurer with athletic build, short brown hair, and bright eyes full of hope
+  stands before an impossibly tall bookshelf in a vast ancient library. The hero carefully pulls a
+  massive book from the weathered shelves, its cover marked with symbols from a forgotten age. The
+  library is filled with towering bookshelves stretching into shadow, with magical amber orbs casting
+  warm light across leather-bound tomes and stone pillars. Dust motes dance in the air in this mystical,
+  quiet space of perpetual twilight. Photorealistic visual style with dramatic lighting and cinematic
+  composition, rich naturalistic tones with dramatic shadows, epic and immersive atmosphere. The hero's
+  determined expression shows courage and optimism as they search for legendary knowledge. Cinematic
+  framing captures this moment of discovery and perseverance.
+tags:
+  - quest
+  - discovery
+  - library
+  - hero
+  - cinematic-realism
+  - ancient-library
+---
+

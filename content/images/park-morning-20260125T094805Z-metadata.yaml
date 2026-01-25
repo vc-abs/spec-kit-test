@@ -1,0 +1,41 @@
+---
+asset-id: "park-morning-20260125T094805Z"
+asset-name: "park-morning"
+timestamp: "2026-01-25T09:48:05Z"
+type: "image"
+format: "PNG"
+file-path: "content/images/park-morning-20260125T094805Z.png"
+size-bytes: 1072463
+dimensions: "1024x1024"
+aspect-ratio: "1:1"
+
+source-scene: "park-morning"
+scene-file: "content/entities/scenes/park-morning.md"
+
+entities-resolved:
+  characters:
+    - name: "max"
+      file: "content/entities/characters/max.md"
+
+prompt-used: "A bright, sunny morning at the local dog park. Max, a friendly golden retriever, runs and plays with other dogs and joins in games of fetch. The scene includes soft golden light, dew on the grass, and families enjoying the morning. Park setting with open lawn and scattered trees."
+
+generation-params:
+  model: "gemini-imagen"
+  aspect-ratio: "1:1"
+  output-format: "image/png"
+
+scene-metadata:
+  title: "Park Morning"
+  description: "A sunny morning at the local dog park where Max plays."
+
+tags:
+  - "park"
+  - "morning"
+  - "dog"
+  - "max"
+
+created-by: "entity-creator"
+operation-type: "batch-asset-generation"
+batch-id: "batch-generate-trilogy-20260125T094805Z"
+---
+
