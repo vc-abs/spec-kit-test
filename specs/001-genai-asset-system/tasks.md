@@ -110,11 +110,11 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Prompt entity-creator agent to generate 3 image variations from different scenes, verify all images and metadata in content/.
 
-- [ ] T034 [US5] Add prompt template for batch generation in .github/prompts/batch-generation.md
-- [ ] T035 [US5] Generate batch of images from multiple scene entities via entity-creator agent prompt (REQUIRES: API credentials)
-- [ ] T036 [US5] Validate batch image naming and DVC tracking
-- [ ] T037 [US5] Validate batch commit message format
-- [ ] T038 [US5] Document batch generation workflow in quickstart.md
+- [X] T034 [US5] Add prompt template for batch generation (not needed - direct agent invocation)
+- [X] T035 [US5] Generate batch of images from multiple scene entities via entity-creator agent prompt (REQUIRES: API credentials)
+- [X] T036 [US5] Validate batch image naming and DVC tracking
+- [X] T037 [US5] Validate batch commit message format
+- [X] T038 [US5] Document batch generation workflow in quickstart.md
 
 **Checkpoint**: Batch asset generation is functional with proper naming and DVC tracking
 

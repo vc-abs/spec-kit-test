@@ -678,6 +678,99 @@ Required environment variables in `.env`:
 - `GEMINI_API_KEY` - Your Google AI API key
 - `MODEL_NAME` - Image generation model (default: `gemini-2.0-flash-exp-image-generation`)
 
+## Batch Image Generation
+
+Generate multiple images from different scenes in a single operation with proper tracking.
+
+### Batch Workflow
+
+Invoke the entity-creator agent to generate multiple images:
+
+```text
+@entity-creator Generate a batch of 3 production images from these scenes:
+1. hero-library-quest
+2. park-morning
+3. max-golden-morning
+
+Save all images to content/images/ with DVC tracking.
+```
+
+The agent will:
+
+1. Process each scene sequentially
+2. Generate images with unique timestamps
+3. Create metadata YAML for each image
+4. Track all images with DVC
+5. Create batch operation log with all results
+
+### Batch Output Structure
+
+```
+content/images/
+├── hero-library-quest-20260125T094805Z.png       (860KB)
+├── hero-library-quest-20260125T094805Z.png.dvc
+├── hero-library-quest-20260125T094805Z-metadata.yaml
+├── park-morning-20260125T094805Z.png              (1.07MB)
+├── park-morning-20260125T094805Z.png.dvc
+├── park-morning-20260125T094805Z-metadata.yaml
+├── max-golden-morning-20260125T094805Z.png        (1.13MB)
+├── max-golden-morning-20260125T094805Z.png.dvc
+└── max-golden-morning-20260125T094805Z-metadata.yaml
+
+logs/
+└── batch-generate-trilogy-20260125T094805Z-operation.log
+```
+
+### Batch Operation Log
+
+The batch log documents all generations in YAML format:
+
+```yaml
+operation-id: "batch-generate-trilogy-20260125T094805Z"
+timestamp: "2026-01-25T09:48:05Z"
+operation-type: "batch-asset-generation"
+status: "success"
+images-generated: 3
+
+assets-generated:
+  - name: "hero-library-quest-20260125T094805Z"
+    type: "image"
+    file-path: "content/images/hero-library-quest-20260125T094805Z.png"
+    size-bytes: 860481
+    source-scene: "hero-library-quest"
+
+validation-results:
+  - rule-id: "VR-BATCH-001"
+    rule: "All requested scenes must have valid scene definition files"
+    status: "passed"
+```
+
+### Batch Commit
+
+Commit all batch assets together:
+
+```bash
+# Stage DVC files and metadata
+git add content/images/*.dvc content/images/*-metadata.yaml logs/
+
+# Commit with batch message
+git commit -m "feat(assets): batch generate 3 production images
+
+- hero-library-quest: Cinematic library exploration scene
+- park-morning: Peaceful morning park with Max
+- max-golden-morning: Watercolor variation of sunrise fetch
+
+Generated via entity-creator batch workflow."
+```
+
+### Batch Best Practices
+
+1. **Batch size**: 3-5 images per batch (avoid rate limits)
+2. **Scene variety**: Mix different scenes for diverse outputs
+3. **Timestamp uniqueness**: Each image gets unique timestamp
+4. **Sequential processing**: Images generated one at a time
+5. **Batch logging**: Single operation log documents all generations
+
 ## Additional Resources
 
 - **Entity Templates**: `content/entities/entity-templates/`
