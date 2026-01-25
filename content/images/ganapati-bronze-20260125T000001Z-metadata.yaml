@@ -1,0 +1,22 @@
+name: ganapati-bronze-20260125T000001Z
+type: generated-image
+version: v1
+generated-at: "2026-01-25T00:00:01Z"
+source-entity: ganapati-bronze
+model:
+  provider: google
+  name: imagen-3.0-generate-001
+  method: text-to-image
+  server: gemini-imagen
+generation-params:
+  aspect-ratio: "1:1"
+  output-format: png
+  prompt: "Traditional South Indian Chola dynasty bronze temple sculpture of Lord Ganapati (Ganesha), the elephant-headed deity. Single-piece lost-wax bronze casting with exceptional refinement. The sculpture shows Ganapati in elegant lalitasana (royal ease) seated pose with perfect balance. Elephant head with smooth bronze surfaces, refined features, gently curved trunk, large ears, single tusk (ekadanta), rounded belly. Four arms gracefully positioned holding modaka (sweet), lotus, axe, and noose. Idealized divine proportions following classical sculptural canons. Ornate crown (mukuta) with precise geometric patterns, multiple layered necklaces, decorative armlets and anklets on all limbs, sacred thread (upavita) crossing chest, carved dhoti with folds. Lotus pedestal base. Dark bronze patina in rich brown-black color developed through age and ritual use. Metallic highlights catching light on raised surfaces - crown, jewelry, limbs, trunk. Verdigris green oxidation accents in recessed areas of ornaments and carved details. Smooth polished bronze finish with subtle anatomical modeling. Dramatic side lighting creating depth and shadows, emphasizing three-dimensional sculptural volume. Strong highlights on metallic surfaces, deep shadows defining carved details. Temple sanctum atmosphere with dark neutral background focusing attention on the bronze form. Sacred, timeless, powerful, serene mood. Chola bronze aesthetic with elegant proportions, graceful pose, refined craftsmanship."
+file:
+  path: content/images/ganapati-bronze-20260125T000001Z.png
+  format: png
+  dimensions: "1024x1024"
+scene-references:
+  character: ganapati
+  style: south-indian-statue
+  scene: ganapati-bronze

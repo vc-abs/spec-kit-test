@@ -1,0 +1,35 @@
+name: ganapati-bronze-260125-000001
+type: generated-image
+version: v1
+generated-at: "2026-01-25T00:00:01Z"
+source-entity: ganapati-bronze
+model:
+  provider: google
+  name: imagen-3.0-generate-001
+  method: text-to-image
+  server: gemini-imagen
+generation-params:
+  aspect-ratio: "4:3"
+  quality: high
+  safety-filter: medium
+  prompt-enhancement: true
+  scene-version: v2
+  character-dependency: ganapati@v1
+  style-dependency: south-indian-statue@v1
+prompt: "Lord Ganapati depicted as a traditional South Indian bronze temple sculpture. Magnificent Chola-style bronze sculpture showing the elephant-headed deity in elegant lalitasana seated posture with perfect balance. Four arms gracefully positioned holding symbolic attributes (modaka, lotus, axe, noose). Dark bronze patina with rich brown-black surface, metallic highlights catching light on crown, jewelry, and limbs, subtle verdigris green oxidation in recessed ornamental areas. Smooth polished bronze showing refined anatomical modeling. Elaborate crown (mukuta) with precise geometric patterns, multiple necklaces, armlets and anklets, sacred thread crossing chest. Single tusk (ekadanta) carefully rendered. Rounded belly symbolizing abundance. Intricate jewelry details with fine craftsmanship. Rich velvet cloth backdrop in deep maroon or burgundy. Dramatic side lighting emphasizing three-dimensional sculptural form and metallic surface, strong highlights on bronze, deep shadows creating depth and mystery, rim lighting outlining divine silhouette. Sacred, timeless, powerful, serene atmosphere. Traditional museum or temple exhibition setting with professional display honoring the sculpture's sacred significance. Lost-wax casting aesthetic with smooth transitions showing master craftsmanship, weight and presence conveying permanence."
+file:
+  path: content/images/ganapati-bronze-260125-000001-01.png
+  size-bytes: 1349370
+  format: PNG
+  dimensions: 820x1024
+  color-space: sRGB
+  bit-depth: 8
+tags:
+  - ganapati
+  - ganesha
+  - bronze-sculpture
+  - chola-style
+  - south-indian
+  - temple-art
+  - devotional
+  - hindu-deity
