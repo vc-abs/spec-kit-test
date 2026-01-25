@@ -32,22 +32,40 @@ This prevents massive 20+ file commits and enables incremental validation and ro
 
 An AI-powered system for generating and managing visual assets using entity-based templates and version control.
 
+**Quick Start:** [docs/quickstart.md](docs/quickstart.md)
+
+**Key Features:**
+
+- **Entity-Based Design**: Characters, styles, environments, scenes as reusable YAML+Markdown entities
+- **Template-Driven**: Quality gates and validation rules defined in entity templates
+- **DVC Integration**: Binary asset tracking and versioning with Data Version Control
+- **MCP Support**: Imagen 3 integration via Model Context Protocol
+- **Agent Workflow**: Automated entity creation and asset generation via Copilot agent
+
 **Directory Structure:**
 
 ```text
 content/
   entities/
-    characters/      # Character entity definitions
-    styles/          # Art style templates
-    environments/    # Scene environment settings
-    scenes/          # Composed scene descriptions
-    meta-prompts/    # Reusable prompt components
+    entity-templates/  # Meta-templates defining entity types
+    characters/        # Character entity definitions
+    styles/            # Art style templates
+    environments/      # Scene environment settings
+    scenes/            # Composed scene descriptions
+  images/              # Generated images (DVC-tracked)
+  test/                # Test assets and validation
+.github/
+  agents/              # Copilot agent definitions
+  prompts/             # Delegation prompts
+logs/                  # Operation logs (timestamped)
 ```
 
-**Status:** In development (Phase 1/9 complete)
+**Status:** ✅ Core implementation complete (Phases 1-9, excluding API-dependent Phase 5 tasks)
 
 **Documentation:**
 
+- Quick Start Guide: [docs/quickstart.md](docs/quickstart.md)
 - Specification: [specs/001-genai-asset-system/spec.md](specs/001-genai-asset-system/spec.md)
 - Technical Plan: [specs/001-genai-asset-system/plan.md](specs/001-genai-asset-system/plan.md)
 - Implementation Tasks: [specs/001-genai-asset-system/tasks.md](specs/001-genai-asset-system/tasks.md)
+- Data Model: [specs/001-genai-asset-system/data-model.md](specs/001-genai-asset-system/data-model.md)

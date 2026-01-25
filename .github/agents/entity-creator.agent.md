@@ -421,6 +421,46 @@ dvc add <path-to-asset>
 
 ---
 
+## Edge Case Validation
+
+**Pre-Operation Checks** (run before creating workspace file):
+
+1. **Environment Variables**:
+   - If operation requires MCP/API access: Check for required env vars
+   - Missing credentials: LOG warning in workspace file, continue with plan
+   - Invalid format: ABORT with clear error message
+
+2. **Batch Size Limits**:
+   - Maximum batch size: 10 items per operation
+   - Exceeds limit: ABORT with message "Batch size {N} exceeds limit of 10. Split into multiple operations."
+   - Suggested: Recommend breaking into smaller batches
+
+3. **File Size Constraints**:
+   - Binary assets > 100MB: LOG warning "Large file {N}MB may impact performance"
+   - Template files > 1MB: LOG warning "Unusually large template, verify correct file"
+   - No hard limits - warnings only
+
+4. **Filename Conflicts**:
+   - Already implemented: Check before creating outputs
+   - Behavior: ABORT with context-aware resolution options
+
+5. **Dependency Depth**:
+   - Maximum dependency depth: 5 levels
+   - Exceeds limit: ABORT with message "Dependency chain too deep ({N} levels). Simplify dependencies."
+   - Prevents infinite recursion
+
+6. **Workspace File Access**:
+   - Cannot create `.workspace/` directory: ABORT with filesystem error
+   - Cannot write workspace file: ABORT with permission error
+   - Missing user 'continue' response: WAIT indefinitely (user controls flow)
+
+**Validation Timing**:
+- **Pre-operation**: Environment, batch size, dependency depth
+- **Pre-file-creation**: Filename conflicts, file size
+- **Post-creation**: Template validation rules, quality gates
+
+---
+
 ## Related Documentation
 
 - Entity Creator Contract: [specs/001-genai-asset-system/contracts/entity-creator.md](../../specs/001-genai-asset-system/contracts/entity-creator.md)
