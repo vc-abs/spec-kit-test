@@ -28,7 +28,9 @@
 !.env.example
 .dvc/cache
 logs/
-content/images/
+content/images/*
+!content/images/*.dvc
+!content/images/*.yaml
 
 ## Testing & Temporary
 test-results/

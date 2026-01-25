@@ -487,6 +487,176 @@ content/test/
 └── hero-library-quest-v1-20260124T180719Z-metadata.yaml  # Generation params
 ```
 
+## Production Image Generation
+
+Once you have scene entities, you can generate production-ready images with full DVC tracking.
+
+### Prerequisites
+
+- Scene entity created in `content/entities/scenes/`
+- `.env` file with `GEMINI_API_KEY` configured
+- MCP server running (automatically started by VS Code)
+- DVC initialized (`dvc init` already done in Phase 5)
+
+### Production Workflow
+
+#### Step 1: Select Scene Entity
+
+Choose an existing scene to generate from:
+
+```bash
+ls content/entities/scenes/
+# hero-library-quest.md
+# max-golden-morning.md
+```
+
+#### Step 2: Generate Image via Entity-Creator
+
+Invoke the entity-creator agent to execute the generation workflow:
+
+```text
+@entity-creator Generate a production image from the scene "max-golden-morning"
+and save it to content/images/ with proper DVC tracking.
+```
+
+The agent will:
+
+1. Create workspace file documenting the generation plan
+2. Read the scene entity and resolve dependencies
+3. Construct prompt combining entity attributes
+4. Invoke MCP server to generate image
+5. Save image to `content/images/<scene>-<timestamp>.png`
+6. Create metadata YAML with generation parameters
+7. Track with DVC (`dvc add` automatically)
+8. Create operation log in `logs/`
+
+#### Step 3: Review Generated Assets
+
+Check the output files:
+
+```bash
+# Image file (gitignored, DVC tracked)
+ls -lh content/images/max-golden-morning-*.png
+
+# DVC tracking file (committed to git)
+cat content/images/max-golden-morning-*.png.dvc
+
+# Metadata with generation params
+cat content/images/max-golden-morning-*-metadata.yaml
+
+# Operation log
+cat logs/generate-max-golden-morning-*-operation.log
+```
+
+#### Step 4: Commit to Git
+
+```bash
+# Stage DVC tracking file and metadata
+git add content/images/*.dvc content/images/*-metadata.yaml
+
+# Stage operation log
+git add logs/
+
+# Commit
+git commit -m "feat(assets): generate max-golden-morning production image"
+```
+
+### Generated Files Structure
+
+```
+content/images/
+├── max-golden-morning-20260125T090658Z.png           # Image (1.1MB, DVC tracked)
+├── max-golden-morning-20260125T090658Z.png.dvc       # DVC tracking (committed)
+└── max-golden-morning-20260125T090658Z-metadata.yaml # Metadata (committed)
+
+logs/
+└── generate-max-golden-morning-20260125-090658-operation.log
+```
+
+### Metadata Structure
+
+The metadata YAML includes all generation parameters:
+
+```yaml
+generated-at: "2026-01-25T09:06:58Z"
+source-scene: "max-golden-morning"
+scene-version: "v1"
+
+entities:
+  characters:
+    - name: "max"
+      version: "v2"
+  environments:
+    - name: "sunrise-meadow"
+      version: "v1"
+  styles:
+    - name: "watercolor-dream"
+      version: "v1"
+
+generation-params:
+  provider: "google-gemini"
+  model: "gemini-2.0-flash-exp-image-generation"
+  aspect-ratio: "1:1"
+  quality: "high"
+```
+
+### DVC Tracking
+
+Images are automatically tracked with DVC:
+
+```bash
+# Check DVC status
+dvc status
+
+# Push to DVC remote (if configured)
+dvc push
+
+# Pull images from DVC remote
+dvc pull content/images/max-golden-morning-*.png.dvc
+```
+
+### Common Production Issues
+
+#### Issue: "Image not saved to content/images/"
+
+**Problem**: Image saved to workspace root or wrong directory.
+
+**Solution**: Ensure MCP server `outputPath` parameter specifies full path: `content/images/<filename>.png`
+
+#### Issue: "DVC tracking failed"
+
+**Problem**: `.gitignore` blocks `.dvc` files or image directory.
+
+**Solution**: Update `.gitignore`:
+
+```gitignore
+content/images/*          # Ignore all files
+!content/images/*.dvc     # Except .dvc tracking files
+!content/images/*.yaml    # Except metadata
+```
+
+#### Issue: "Entity references not found"
+
+**Problem**: Scene references entities that don't exist.
+
+**Solution**: Create missing entities first, or update scene to remove references.
+
+### Example Production Generation
+
+**Input**: Scene entity `max-golden-morning.md` with:
+
+- Character: `max` (golden retriever)
+- Environment: `sunrise-meadow` (park at dawn)
+- Style: `watercolor-dream` (soft watercolor aesthetic)
+
+**Output**: Watercolor image of Max chasing tennis ball at sunrise with:
+
+- Soft pastel tones
+- Gentle gradients
+- Dreamy morning light
+- 1024x1024 resolution
+- Full DVC tracking
+
 ### MCP Configuration
 
 The MCP server is configured in `.vscode/mcp.json`:

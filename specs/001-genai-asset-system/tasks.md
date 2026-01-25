@@ -95,10 +95,10 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Prompt entity-creator agent to generate an image from a scene entity, verify image and metadata in content/.
 
-- [ ] T030 [US4] Generate image from scene entity via entity-creator agent prompt (REQUIRES: API credentials)
-- [ ] T031 [US4] Validate image naming pattern and DVC tracking
-- [ ] T032 [US4] Validate image metadata YAML includes scene entity reference and generation parameters
-- [ ] T033 [US4] Document production image generation workflow in quickstart.md
+- [X] T030 [US4] Generate image from scene entity via entity-creator agent prompt (REQUIRES: API credentials)
+- [X] T031 [US4] Validate image naming pattern and DVC tracking
+- [X] T032 [US4] Validate image metadata YAML includes scene entity reference and generation parameters
+- [X] T033 [US4] Document production image generation workflow in quickstart.md
 
 **Checkpoint**: Production image generation is functional with full DVC tracking and metadata
 

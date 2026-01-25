@@ -1,0 +1,55 @@
+---
+# Image Generation Metadata
+# Generated: 2026-01-25T09:06:58Z
+# Operation: generate-max-golden-morning-20260125-090658
+
+generated-at: "2026-01-25T09:06:58Z"
+source-scene: "max-golden-morning"
+scene-version: "v1"
+
+# Referenced entities
+entities:
+  characters:
+    - name: "max"
+      version: "v2"
+  environments:
+    - name: "sunrise-meadow"
+      version: "v1"
+  styles:
+    - name: "watercolor-dream"
+      version: "v1"
+
+# Generation parameters
+generation-params:
+  provider: "google-gemini"
+  model: "gemini-2.0-flash-exp-image-generation"
+  mcp-config: "gemini-imagen-default"
+  aspect-ratio: "1:1"
+  output-format: "png"
+  dimensions: "1024x1024"
+  quality: "high"
+  safety-filter: "medium"
+  prompt-enhancement: true
+  cost-tier: "medium"
+
+# Prompt composition
+prompt-strategy: "combine-entities"
+prompt-elements:
+  - source: "max"
+    attributes: ["physical-appearance", "personality-traits"]
+  - source: "sunrise-meadow"
+    attributes: ["environment-details", "lighting", "atmosphere"]
+  - source: "watercolor-dream"
+    attributes: ["style-keywords", "aesthetic-guidance"]
+
+# Output metadata
+file-name: "max-golden-morning-20260125T090658Z.png"
+file-path: "content/images/max-golden-morning-20260125T090658Z.png"
+file-size-bytes: 1153024
+file-format: "PNG"
+color-space: "RGB"
+dvc-tracked: true
+
+# Workflow tracking
+workflow-stage: "production-generation"
+operation-log: "logs/generate-max-golden-morning-20260125-090658-operation.log"
