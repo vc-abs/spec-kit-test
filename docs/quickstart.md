@@ -400,6 +400,113 @@ content/entities/
 2. **Review templates** for complete field references and validation rules
 3. **Create your first entity** using the entity-creator agent
 4. **Compose scenes** by combining characters, environments, and styles
+5. **Generate images** from scenes using the MCP workflow below
+
+## Image Generation Workflow
+
+Generate images from scene entities using the Gemini MCP server integration.
+
+### Prerequisites
+
+1. **API Key**: Set `GEMINI_API_KEY` in `.env` file
+2. **MCP Server**: Configured in `.vscode/mcp.json`
+3. **DVC**: Initialized for asset tracking
+
+### Step 1: Select Scene Entity
+
+Choose a scene from `content/entities/scenes/`:
+
+```yaml
+# content/entities/scenes/hero-library-quest.md
+---
+name: hero-library-quest
+type: scene
+narrative: "The hero ventures into the ancient library..."
+characters: ["hero-protagonist"]
+environment: "ancient-library"
+style: "cinematic-realism"
+---
+```
+
+### Step 2: Construct Prompt
+
+Combine scene narrative with referenced entity attributes:
+
+```text
+[Style art-direction]: [Scene narrative] in [Environment location].
+[Character appearance]. [Scene mood] atmosphere. [Environment lighting].
+[Style color-palette].
+```
+
+**Example**:
+
+```text
+Photorealistic cinematic style: A brave young adventurer with athletic
+build, short brown hair stands before towering bookshelves in a vast
+ancient library. Mysterious, determined atmosphere. Soft amber glow
+from floating magical orbs. Rich naturalistic tones with dramatic shadows.
+```
+
+### Step 3: Generate Image via MCP
+
+Use the `gemini-imagen` MCP server tool:
+
+```text
+@gemini-imagen generateImage with prompt="<constructed-prompt>" aspectRatio="1:1"
+```
+
+Or select an MCP config entity from `content/entities/mcp-configs/`:
+
+- `gemini-imagen-default` - Square 1:1 format
+- `gemini-imagen-cinematic` - Widescreen 16:9
+- `gemini-imagen-portrait` - Vertical 9:16
+
+### Step 4: Save and Track
+
+1. Move generated image to `content/test/` with naming convention:
+
+   ```
+   <scene-name>-<version>-<timestamp>.png
+   ```
+
+2. Track with DVC:
+
+   ```bash
+   dvc add content/test/<image-file>.png
+   git add content/test/<image-file>.png.dvc content/test/.gitignore
+   ```
+
+3. Create metadata YAML alongside image with generation parameters
+
+### Example Output
+
+```
+content/test/
+├── hero-library-quest-v1-20260124T180719Z.png        # Generated image
+├── hero-library-quest-v1-20260124T180719Z.png.dvc    # DVC tracking
+└── hero-library-quest-v1-20260124T180719Z-metadata.yaml  # Generation params
+```
+
+### MCP Configuration
+
+The MCP server is configured in `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "gemini-imagen": {
+      "command": "node",
+      "args": ["${workspaceFolder}/.mcp-servers/gemini-mcp-server/server.js"],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
+```
+
+Required environment variables in `.env`:
+
+- `GEMINI_API_KEY` - Your Google AI API key
+- `MODEL_NAME` - Image generation model (default: `gemini-2.0-flash-exp-image-generation`)
 
 ## Additional Resources
 

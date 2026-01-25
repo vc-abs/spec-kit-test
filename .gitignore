@@ -9,6 +9,7 @@
 !.vscode/launch.json
 !.vscode/settings.json
 !.vscode/extensions.json
+!.vscode/mcp.json
 !.editorconfig
 !cspell.json
 !.specify
@@ -19,17 +20,15 @@
 ## General
 !.git*
 !.ai
+!.github
 
 ## GenAI Asset System
 .env
 .env.*
 !.env.example
-*.dvc
-!.dvc*
 .dvc/cache
 logs/
 content/images/
 
 ## Testing & Temporary
-temp/
 test-results/

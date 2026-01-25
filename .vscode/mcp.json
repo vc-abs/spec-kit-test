@@ -1,0 +1,11 @@
+{
+	"servers": {
+		"gemini-imagen": {
+			"command": "node",
+			"args": [
+				"${workspaceFolder}/.mcp-servers/gemini-mcp-server/server.js"
+			],
+			"envFile": "${workspaceFolder}/.env"
+		}
+	}
+}
