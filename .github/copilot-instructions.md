@@ -63,4 +63,14 @@ git reset               # Undo operations (allowed when fixing mistakes)
 ## Development Guidelines
 - Do not use sensitive paths like users home directory in files.
 - Prefer automation scripts over markdown instructions to the user. The idea is to allow for better developer experience.
+- **Prefer project/workspace level configuration over user level configuration** — Use `.github/`, `.vscode/`, and project root config files instead of `~/.config/` or `~/` user directories.
+
+## Directory Structure
+- `.temp/` — Temporary files for testing and experimentation (auto-ignored by `.*` pattern, preserves `.gitkeep`)
+- `.work/` — Work-in-progress files and drafts (auto-ignored by `.*` pattern)
+- `.mcp-servers/` — Local MCP server implementations (auto-ignored by `.*` pattern)
+- `.vscode/mcp.json` — MCP configuration for VS Code (workspace-specific)
+- `.github/copilot-mcp.json` — MCP configuration for Copilot CLI (project-specific)
+- `content/test/` — Test image outputs tracked with DVC
+- `content/images/` — Production image outputs (gitignored)
 
