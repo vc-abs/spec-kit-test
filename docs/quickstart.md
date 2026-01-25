@@ -771,6 +771,165 @@ Generated via entity-creator batch workflow."
 4. **Sequential processing**: Images generated one at a time
 5. **Batch logging**: Single operation log documents all generations
 
+## Browsing Generated Images
+
+All generated images are stored in `content/images/` with associated metadata and DVC tracking files.
+
+### File Structure
+
+```
+content/images/
+├── hero-library-quest-20260125T094805Z.png       # Image file (gitignored)
+├── hero-library-quest-20260125T094805Z.png.dvc   # DVC tracking (committed)
+├── hero-library-quest-20260125T094805Z-metadata.yaml  # Metadata (committed)
+├── max-golden-morning-20260125T090658Z.png
+├── max-golden-morning-20260125T090658Z.png.dvc
+├── max-golden-morning-20260125T090658Z-metadata.yaml
+├── max-golden-morning-20260125T094805Z.png
+├── max-golden-morning-20260125T094805Z.png.dvc
+├── max-golden-morning-20260125T094805Z-metadata.yaml
+├── park-morning-20260125T094805Z.png
+├── park-morning-20260125T094805Z.png.dvc
+└── park-morning-20260125T094805Z-metadata.yaml
+```
+
+### Viewing Images in VS Code
+
+**File Explorer Navigation**:
+
+1. Open VS Code file explorer (Ctrl+Shift+E / Cmd+Shift+E)
+2. Navigate to `content/images/`
+3. Files visible:
+   - **PNG images**: Visible but gitignored (actual image data)
+   - **.dvc files**: Committed to git (tracking metadata)
+   - **-metadata.yaml**: Committed to git (generation parameters)
+
+**Image Preview**:
+
+- Click any `.png` file to open image preview
+- View actual generated image
+- Images remain local until `dvc push`
+
+**Metadata Viewing**:
+
+- Click any `-metadata.yaml` file to view in editor
+- See generation parameters, entity references, dimensions
+- All in kebab-case YAML format
+
+### DVC Version Control
+
+**Check Tracking Status**:
+
+```bash
+# View DVC status
+dvc status
+
+# List tracked files
+git ls-files "*.dvc"
+
+# Show cache location
+dvc cache dir
+```
+
+**Retrieve Specific Versions**:
+
+```bash
+# Pull all images from remote (if configured)
+dvc pull
+
+# Pull specific image
+dvc pull content/images/hero-library-quest-20260125T094805Z.png.dvc
+
+# Check file integrity
+dvc status content/images/
+```
+
+**View DVC Tracking File**:
+
+```bash
+# Show .dvc file contents
+cat content/images/hero-library-quest-20260125T094805Z.png.dvc
+```
+
+Output:
+
+```yaml
+outs:
+- md5: c4b3c77bb002f6c9ff1d67f4cbeaf0df
+  size: 860481
+  hash: md5
+  path: hero-library-quest-20260125T094805Z.png
+```
+
+### Image Versions
+
+Multiple versions of the same scene can coexist:
+
+```bash
+# List all versions of max-golden-morning
+ls -lh content/images/max-golden-morning-*.png
+
+# Compare metadata between versions
+diff content/images/max-golden-morning-20260125T090658Z-metadata.yaml \
+     content/images/max-golden-morning-20260125T094805Z-metadata.yaml
+```
+
+Each version has:
+
+- Unique timestamp in filename
+- Separate .dvc tracking file
+- Individual metadata YAML
+
+### Browsing Metadata
+
+**View Generation Parameters**:
+
+```bash
+# Show metadata for specific image
+cat content/images/hero-library-quest-20260125T094805Z-metadata.yaml
+```
+
+Metadata includes:
+
+- `generated-at`: ISO 8601 timestamp
+- `source-scene`: Scene entity name and version
+- `entities`: Referenced characters, environments, styles
+- `generation-params`: Provider, model, aspect-ratio, quality, etc.
+- `file-path`: Image location
+- `dvc-tracked`: Tracking status
+
+**Search Images by Entity**:
+
+```bash
+# Find all images using specific character
+grep -l "max" content/images/*-metadata.yaml
+
+# Find images by style
+grep -l "watercolor-dream" content/images/*-metadata.yaml
+```
+
+### DVC Cache Management
+
+**View Cache**:
+
+```bash
+# List cached files
+ls -lh .dvc/cache/files/md5/
+
+# Check cache disk usage
+du -sh .dvc/cache/
+```
+
+**Clean Cache** (if needed):
+
+```bash
+# Remove unused cache entries
+dvc gc
+
+# Remove all cache entries
+dvc gc --all-commits
+```
+
 ## Additional Resources
 
 - **Entity Templates**: `content/entities/entity-templates/`

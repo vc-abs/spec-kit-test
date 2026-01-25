@@ -126,10 +126,10 @@ description: "Task list for GenAI Asset Generation System feature implementation
 
 **Independent Test**: Generate several images, browse content/ in VS Code, and view metadata YAML files.
 
-- [ ] T039 [US6] Generate multiple test images with different scenes (REQUIRES: API credentials)
-- [ ] T040 [US6] Validate image and metadata file discoverability in VS Code
-- [ ] T041 [US6] Validate DVC version history for images
-- [ ] T042 [US6] Document image browsing and DVC usage in quickstart.md
+- [X] T039 [US6] Generate multiple test images with different scenes (REQUIRES: API credentials)
+- [X] T040 [US6] Validate image and metadata file discoverability in VS Code
+- [X] T041 [US6] Validate DVC version history for images
+- [X] T042 [US6] Document image browsing and DVC usage in quickstart.md
 
 **Checkpoint**: Image browsing and version retrieval are functional
 
