@@ -1,0 +1,22 @@
+name: ganapati-tanjore-20260125T000000Z
+type: generated-image
+version: v1
+generated-at: "2026-01-25T00:00:00Z"
+source-entity: ganapati-tanjore
+model:
+  provider: google
+  name: imagen-3.0-generate-001
+  method: text-to-image
+  server: gemini-imagen
+generation-params:
+  aspect-ratio: "1:1"
+  output-format: png
+  prompt: "Traditional Tanjore painting of Lord Ganapati (Ganesha), the elephant-headed Hindu deity, seated in a divine pose (lalitasana). The deity is depicted frontally with intricate details: elaborate crown with gold foil embellishments, four arms adorned with ornate jewelry featuring gem-like details, sacred thread (upavita) across the chest with gold highlights, rich colorful garments with intricate pattern work, modaka (sweet) held in one hand, large ears, curved trunk, single tusk, rounded belly. Background features an ornate prabhavali (decorative aureole arch) with gold foil work and intricate patterns, traditional Tanjore-style geometric and floral borders in gold and vibrant colors, lotus motifs, auspicious patterns, and Mushika (mouse vehicle) at the base. Color palette: deep crimson and red for divine energy, royal blue for celestial elements, emerald green for natural vitality, rich gold throughout for divine radiance, vibrant orange and yellow for warmth. Style emphasizes raised relief (gesso work) on jewelry and crown creating three-dimensional effect, smooth polished surface with jewel-like color saturation, extensive gold foil details on crown, all jewelry elements, sacred thread, garment borders, aureole framework, and border patterns. Divine, auspicious, opulent, devotional mood. Classical South Indian temple art aesthetic with gold leaf embellishments."
+file:
+  path: content/images/ganapati-tanjore-20260125T000000Z.png
+  format: png
+  dimensions: "1024x1024"
+scene-references:
+  character: ganapati
+  style: tanjore-painting
+  scene: ganapati-tanjore
