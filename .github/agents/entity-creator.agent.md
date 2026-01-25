@@ -197,7 +197,12 @@ When user requests multiple variations:
 
 **Scope**: Operation-level (not entity-level). One log entry per operation, regardless of how many entities created.
 
-**Log File Path**: \`logs/<operation-id>-operation.log\` (e.g., \`logs/create-character-max-operation.log\`)
+**Log File Path**: `logs/YYYYMMDD-HHMMSS-<operation-name>-operation.log`
+
+Examples:
+- `logs/20260125-090658-generate-max-golden-morning-operation.log`
+- `logs/20260125-094805-batch-generate-trilogy-operation.log`
+- `logs/20260120-091500-create-character-max-operation.log`
 
 **Format**: YAML array with full audit trail
 
@@ -341,6 +346,53 @@ dependencies:
 - User responses
 - Validation results
 - Operation status and next actions
+
+---
+
+## Generated Asset Naming Convention
+
+When creating binary assets (images, videos, audio), use this naming pattern:
+
+**Format**: `<asset-name>-<YYMMDD>-<HHMMSS>-<VV>.<ext>`
+
+**Components**:
+- `<asset-name>`: Semantic name from source entity (e.g., `max-golden-morning`)
+- `<YYMMDD>`: Date (6 digits)
+- `<HHMMSS>`: Time with seconds (6 digits)
+- `<VV>`: Variation number (01, 02, 03...)
+- `<ext>`: File extension (png, mp4, mp3, etc.)
+
+**Example**: `max-golden-morning-260125-090658-01.png`
+
+**Location**:
+- **Test assets**: `content/test/`
+- **Production assets**: `content/images/`, `content/videos/`, `content/audio/`
+
+### Asset Metadata Pattern
+
+Create YAML metadata file co-located with asset: `<asset-name>-metadata.yaml`
+
+**Required fields** (use kebab-case):
+- `name`: Asset name (without extension)
+- `type`: Asset type (generated-image, generated-video, etc.)
+- `version`: Asset version (v1, v2, etc.)
+- `generated-at`: ISO timestamp
+- `source-entity`: Name of entity used to generate asset
+- `model`: Provider, model name, method, server
+- `generation-params`: Model-specific parameters
+- `file`: Path, size-bytes, format, dimensions
+
+### DVC Tracking for Binary Assets
+
+After creating binary assets:
+
+```bash
+dvc add <path-to-asset>
+```
+
+**Git Workflow**:
+- **Commit**: `.dvc` file and `-metadata.yaml` file
+- **Don't commit**: Binary asset (gitignored)
 
 ---
 
